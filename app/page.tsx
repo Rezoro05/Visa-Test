@@ -835,9 +835,8 @@ export default function Home() {
                 {activeQuestion.type === "multi_choice" && (
                   <div className="choice-grid multi-choice-grid">
                     {activeQuestion.options?.map((option) => {
-                      const selected = Array.isArray(answers[activeQuestion.id])
-                        ? answers[activeQuestion.id].includes(option.value)
-                        : false;
+                      const currentAnswer = answers[activeQuestion.id];
+                      const selected = Array.isArray(currentAnswer) ? currentAnswer.includes(option.value) : false;
                       return (
                         <button
                           className={`choice-card ${selected ? "selected" : ""}`}
