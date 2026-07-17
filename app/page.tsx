@@ -62,7 +62,7 @@ type TarotCard = {
   image: string;
 };
 
-const draftKey = "test_visa_draft_v2";
+const draftKey = "test_visa_draft_v3";
 const whatsappNumber = "995555123456";
 
 function getInitialDraft() {
@@ -555,26 +555,221 @@ const configs: Record<DestinationCode, DestinationConfig> = {
   },
 };
 
-const nationalities = [
-  label("Georgia", "Georgia", "საქართველო"),
-  label("Armenia", "Armenia", "სომხეთი"),
-  label("Azerbaijan", "Azerbaijan", "აზერბაიჯანი"),
-  label("Turkey", "Turkey", "თურქეთი"),
-  label("Ukraine", "Ukraine", "უკრაინა"),
-  label("Russia", "Russia", "რუსეთი"),
-  label("Kazakhstan", "Kazakhstan", "ყაზახეთი"),
-  label("Uzbekistan", "Uzbekistan", "უზბეკეთი"),
-  label("India", "India", "ინდოეთი"),
-  label("China", "China", "ჩინეთი"),
-  label("Philippines", "Philippines", "ფილიპინები"),
-  label("United Arab Emirates", "United Arab Emirates", "არაბთა გაერთიანებული საამიროები"),
-  label("Israel", "Israel", "ისრაელი"),
-  label("United States", "United States", "ამერიკის შეერთებული შტატები"),
-  label("Canada", "Canada", "კანადა"),
-  label("United Kingdom", "United Kingdom", "გაერთიანებული სამეფო"),
-  label("European Union", "European Union country", "ევროკავშირის ქვეყანა"),
-  label("Other", "Other nationality", "სხვა მოქალაქეობა"),
-];
+const countryCodes = [
+  "AF", "AL", "DZ", "AD", "AO", "AG", "AR", "AM", "AU", "AT", "AZ",
+  "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "BI",
+  "CV", "KH", "CM", "CA", "CF", "TD", "CL", "CN", "CO", "KM", "CG", "CD", "CR", "CI", "HR", "CU", "CY", "CZ",
+  "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "GQ", "ER", "EE", "SZ", "ET",
+  "FJ", "FI", "FR", "GA", "GM", "GE", "DE", "GH", "GR", "GD", "GT", "GN", "GW", "GY",
+  "HT", "HN", "HU", "IS", "IN", "ID", "IR", "IQ", "IE", "IL", "IT",
+  "JM", "JP", "JO", "KZ", "KE", "KI", "KP", "KR", "KW", "KG", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU",
+  "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MR", "MU", "MX", "FM", "MD", "MC", "MN", "ME", "MA", "MZ", "MM",
+  "NA", "NR", "NP", "NL", "NZ", "NI", "NE", "NG", "MK", "NO", "OM",
+  "PK", "PW", "PS", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "QA",
+  "RO", "RU", "RW", "KN", "LC", "VC", "WS", "SM", "ST", "SA", "SN", "RS", "SC", "SL", "SG", "SK", "SI", "SB", "SO", "ZA", "SS", "ES", "LK", "SD", "SR", "SE", "CH", "SY",
+  "TW", "TJ", "TZ", "TH", "TL", "TG", "TO", "TT", "TN", "TR", "TM", "TV",
+  "UG", "UA", "AE", "GB", "US", "UY", "UZ", "VU", "VA", "VE", "VN", "YE", "ZM", "ZW", "XK",
+] as const;
+
+const georgianCountryNames: Partial<Record<(typeof countryCodes)[number], string>> = {
+  AF: "ავღანეთი",
+  AL: "ალბანეთი",
+  DZ: "ალჟირი",
+  AD: "ანდორა",
+  AO: "ანგოლა",
+  AG: "ანტიგუა და ბარბუდა",
+  AR: "არგენტინა",
+  AM: "სომხეთი",
+  AU: "ავსტრალია",
+  AT: "ავსტრია",
+  AZ: "აზერბაიჯანი",
+  BS: "ბაჰამის კუნძულები",
+  BH: "ბაჰრეინი",
+  BD: "ბანგლადეში",
+  BB: "ბარბადოსი",
+  BY: "ბელარუსი",
+  BE: "ბელგია",
+  BZ: "ბელიზი",
+  BJ: "ბენინი",
+  BT: "ბუტანი",
+  BO: "ბოლივია",
+  BA: "ბოსნია და ჰერცეგოვინა",
+  BW: "ბოტსვანა",
+  BR: "ბრაზილია",
+  BN: "ბრუნეი",
+  BG: "ბულგარეთი",
+  BF: "ბურკინა-ფასო",
+  BI: "ბურუნდი",
+  CV: "კაბო-ვერდე",
+  KH: "კამბოჯა",
+  CM: "კამერუნი",
+  CA: "კანადა",
+  CF: "ცენტრალური აფრიკის რესპუბლიკა",
+  TD: "ჩადი",
+  CL: "ჩილე",
+  CN: "ჩინეთი",
+  CO: "კოლუმბია",
+  KM: "კომორის კუნძულები",
+  CG: "კონგო - ბრაზავილი",
+  CD: "კონგო - კინშასა",
+  CR: "კოსტა-რიკა",
+  CI: "კოტ-დივუარი",
+  HR: "ხორვატია",
+  CU: "კუბა",
+  CY: "კვიპროსი",
+  CZ: "ჩეხეთი",
+  DK: "დანია",
+  DJ: "ჯიბუტი",
+  DM: "დომინიკა",
+  DO: "დომინიკელთა რესპუბლიკა",
+  EC: "ეკვადორი",
+  EG: "ეგვიპტე",
+  SV: "სალვადორი",
+  GQ: "ეკვატორული გვინეა",
+  ER: "ერიტრეა",
+  EE: "ესტონეთი",
+  SZ: "სვაზილენდი",
+  ET: "ეთიოპია",
+  FJ: "ფიჯი",
+  FI: "ფინეთი",
+  FR: "საფრანგეთი",
+  GA: "გაბონი",
+  GM: "გამბია",
+  GE: "საქართველო",
+  DE: "გერმანია",
+  GH: "განა",
+  GR: "საბერძნეთი",
+  GD: "გრენადა",
+  GT: "გვატემალა",
+  GN: "გვინეა",
+  GW: "გვინეა-ბისაუ",
+  GY: "გაიანა",
+  HT: "ჰაიტი",
+  HN: "ჰონდურასი",
+  HU: "უნგრეთი",
+  IS: "ისლანდია",
+  IN: "ინდოეთი",
+  ID: "ინდონეზია",
+  IR: "ირანი",
+  IQ: "ერაყი",
+  IE: "ირლანდია",
+  IL: "ისრაელი",
+  IT: "იტალია",
+  JM: "იამაიკა",
+  JP: "იაპონია",
+  JO: "იორდანია",
+  KZ: "ყაზახეთი",
+  KE: "კენია",
+  KI: "კირიბატი",
+  KP: "ჩრდილოეთ კორეა",
+  KR: "სამხრეთ კორეა",
+  KW: "ქუვეითი",
+  KG: "ყირგიზეთი",
+  LA: "ლაოსი",
+  LV: "ლატვია",
+  LB: "ლიბანი",
+  LS: "ლესოთო",
+  LR: "ლიბერია",
+  LY: "ლიბია",
+  LI: "ლიხტენშტაინი",
+  LT: "ლიეტუვა",
+  LU: "ლუქსემბურგი",
+  MG: "მადაგასკარი",
+  MW: "მალავი",
+  MY: "მალაიზია",
+  MV: "მალდივები",
+  ML: "მალი",
+  MT: "მალტა",
+  MH: "მარშალის კუნძულები",
+  MR: "მავრიტანია",
+  MU: "მავრიკი",
+  MX: "მექსიკა",
+  FM: "მიკრონეზია",
+  MD: "მოლდოვა",
+  MC: "მონაკო",
+  MN: "მონღოლეთი",
+  ME: "მონტენეგრო",
+  MA: "მაროკო",
+  MZ: "მოზამბიკი",
+  MM: "მიანმარი (ბირმა)",
+  NA: "ნამიბია",
+  NR: "ნაურუ",
+  NP: "ნეპალი",
+  NL: "ნიდერლანდები",
+  NZ: "ახალი ზელანდია",
+  NI: "ნიკარაგუა",
+  NE: "ნიგერი",
+  NG: "ნიგერია",
+  MK: "ჩრდილოეთ მაკედონია",
+  NO: "ნორვეგია",
+  OM: "ომანი",
+  PK: "პაკისტანი",
+  PW: "პალაუ",
+  PS: "პალესტინის ტერიტორიები",
+  PA: "პანამა",
+  PG: "პაპუა-ახალი გვინეა",
+  PY: "პარაგვაი",
+  PE: "პერუ",
+  PH: "ფილიპინები",
+  PL: "პოლონეთი",
+  PT: "პორტუგალია",
+  QA: "კატარი",
+  RO: "რუმინეთი",
+  RU: "რუსეთი",
+  RW: "რუანდა",
+  KN: "სენტ-კიტსი და ნევისი",
+  LC: "სენტ-ლუსია",
+  VC: "სენტ-ვინსენტი და გრენადინები",
+  WS: "სამოა",
+  SM: "სან-მარინო",
+  ST: "სან-ტომე და პრინსიპი",
+  SA: "საუდის არაბეთი",
+  SN: "სენეგალი",
+  RS: "სერბეთი",
+  SC: "სეიშელის კუნძულები",
+  SL: "სიერა-ლეონე",
+  SG: "სინგაპური",
+  SK: "სლოვაკეთი",
+  SI: "სლოვენია",
+  SB: "სოლომონის კუნძულები",
+  SO: "სომალი",
+  ZA: "სამხრეთ აფრიკის რესპუბლიკა",
+  SS: "სამხრეთ სუდანი",
+  ES: "ესპანეთი",
+  LK: "შრი-ლანკა",
+  SD: "სუდანი",
+  SR: "სურინამი",
+  SE: "შვედეთი",
+  CH: "შვეიცარია",
+  SY: "სირია",
+  TW: "ტაივანი",
+  TJ: "ტაჯიკეთი",
+  TZ: "ტანზანია",
+  TH: "ტაილანდი",
+  TL: "ტიმორ-ლესტე",
+  TG: "ტოგო",
+  TO: "ტონგა",
+  TT: "ტრინიდადი და ტობაგო",
+  TN: "ტუნისი",
+  TR: "თურქეთი",
+  TM: "თურქმენეთი",
+  TV: "ტუვალუ",
+  UG: "უგანდა",
+  UA: "უკრაინა",
+  AE: "არაბთა გაერთიანებული საამიროები",
+  GB: "გაერთიანებული სამეფო",
+  US: "ამერიკის შეერთებული შტატები",
+  UY: "ურუგვაი",
+  UZ: "უზბეკეთი",
+  VU: "ვანუატუ",
+  VA: "ქალაქი ვატიკანი",
+  VE: "ვენესუელა",
+  VN: "ვიეტნამი",
+  YE: "იემენი",
+  ZM: "ზამბია",
+  ZW: "ზიმბაბვე",
+  XK: "კოსოვო",
+};
 
 function yesNo() {
   return [label("yes", "Yes", "კი"), label("no", "No", "არა")];
@@ -826,6 +1021,18 @@ export default function Home() {
   const [result, setResult] = useState<ScoreResult | null>(null);
 
   const t = copy[language];
+  const nationalityOptions = useMemo(() => {
+    const displayNames = new Intl.DisplayNames([language === "ka" ? "ka" : "en"], { type: "region" });
+
+    return countryCodes
+      .map((code) => ({
+        value: code,
+        label: language === "ka"
+          ? (georgianCountryNames[code] ?? displayNames.of(code) ?? code)
+          : (code === "XK" ? "Kosovo" : (displayNames.of(code) ?? code)),
+      }))
+      .sort((first, second) => first.label.localeCompare(second.label, language === "ka" ? "ka" : "en"));
+  }, [language]);
   const config = destination ? configs[destination] : null;
   const questions = useMemo(() => (config ? visibleQuestions(config, answers) : []), [answers, config]);
   const activeQuestion = questions[step];
@@ -935,15 +1142,20 @@ export default function Home() {
       : "";
 
   return (
-    <main className="min-h-screen overflow-hidden bg-white text-[#172119]">
+    <main className={`lang-${language} min-h-screen overflow-hidden bg-white text-[#172119]`}>
       <section className="mx-auto flex min-h-screen w-full max-w-[1380px] flex-col px-5 py-5 sm:px-8">
         <header className="flex items-center justify-between gap-4">
-          <div className="brand-logo-wrap">
+          <button
+            aria-label={language === "ka" ? "მთავარ გვერდზე დაბრუნება" : "Go to home page"}
+            className="brand-logo-wrap brand-logo-button"
+            onClick={startOver}
+            type="button"
+          >
             {/* Plain img is intentional here: it reliably serves the approved logo asset in local preview and deployed static hosting. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img alt="eConsul" className="brand-logo" height={54} src="/econsul-logo.png" width={231} />
             <span>Test Visa beta</span>
-          </div>
+          </button>
           <div className="rounded-full border border-[#d5ded9] bg-white p-1">
             {(["en", "ka"] as Language[]).map((lang) => (
               <button
@@ -1008,8 +1220,8 @@ export default function Home() {
                   value={nationality}
                 >
                   <option value="">{t.nationalityPlaceholder}</option>
-                  {nationalities.map((item) => (
-                    <option key={item.value} value={item.value}>{item.label[language]}</option>
+                  {nationalityOptions.map((item) => (
+                    <option key={item.value} value={item.value}>{item.label}</option>
                   ))}
                 </select>
                 <div className="actions">

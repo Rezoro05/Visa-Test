@@ -29,7 +29,11 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+
+.lang-ka {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Georgian", Sylfaen, sans-serif;
 }
 
 main {
@@ -91,6 +95,16 @@ button:disabled {
   border-radius: 8px;
   background: transparent;
   padding: 8px 12px 8px 0;
+}
+
+.brand-logo-button {
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.brand-logo-button:hover .brand-logo {
+  opacity: 0.84;
 }
 
 .brand-logo {
@@ -605,6 +619,39 @@ button:disabled {
   color: var(--brand);
 }
 
+.lang-ka .hero-heading {
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  line-height: 1.04;
+  overflow-wrap: anywhere;
+}
+
+.lang-ka .flow-space h2 {
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  line-height: 1.16;
+  overflow-wrap: anywhere;
+}
+
+.lang-ka .choice-card strong,
+.lang-ka .destination-card strong,
+.lang-ka .steps-strip strong,
+.lang-ka .result-view {
+  overflow-wrap: anywhere;
+}
+
+.lang-ka .choice-card strong {
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.lang-ka .destination-card strong {
+  font-size: 0.94rem;
+  line-height: 1.35;
+}
+
+.lang-ka .card-cta {
+  font-size: 0.85rem;
+}
+
 .hero-actions {
   display: flex;
   align-items: center;
@@ -750,6 +797,38 @@ button:disabled {
 
   .hero-copy {
     max-width: 100%;
+  }
+
+  .lang-ka .hero-heading {
+    font-size: 2.45rem;
+    line-height: 1.1;
+  }
+
+  .lang-ka .flow-space h2 {
+    font-size: 1.75rem;
+    line-height: 1.22;
+  }
+
+  .lang-ka .choice-card {
+    min-height: 70px;
+    padding: 16px;
+  }
+
+  .lang-ka .choice-card strong {
+    font-size: 0.94rem;
+  }
+
+  .lang-ka .destination-card {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .lang-ka .destination-card:hover {
+    padding: 13px;
+  }
+
+  .lang-ka .card-cta {
+    padding-inline: 6px;
   }
 
   .destination-row,
