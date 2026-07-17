@@ -32,14 +32,20 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+main {
+  position: relative;
+  isolation: isolate;
+  background: var(--background) !important;
+}
+
 main::before {
   content: "";
-  position: fixed;
-  inset: auto -8vw -18vh -8vw;
+  position: absolute;
+  inset: auto -8vw 0 -8vw;
   z-index: 0;
-  height: 44vh;
+  height: 180px;
   background: var(--brand);
-  clip-path: polygon(0 30%, 16% 56%, 100% 0, 100% 100%, 0 100%);
+  clip-path: polygon(0 52%, 18% 68%, 100% 12%, 100% 100%, 0 100%);
   pointer-events: none;
 }
 
@@ -50,7 +56,8 @@ main > section {
 
 button,
 a,
-input {
+input,
+select {
   transition:
     background-color 160ms ease,
     border-color 160ms ease,
@@ -62,6 +69,11 @@ input {
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
+  outline: 3px solid #e3f05f;
+  outline-offset: 3px;
+}
+
+select:focus-visible {
   outline: 3px solid #e3f05f;
   outline-offset: 3px;
 }
@@ -327,6 +339,11 @@ button:disabled {
   color: #7d8d89;
 }
 
+.nationality-select {
+  appearance: auto;
+  cursor: pointer;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -509,49 +526,19 @@ button:disabled {
 }
 
 .tarot-card {
-  position: relative;
-  display: grid;
-  min-height: 190px;
-  place-items: center;
+  display: block;
+  aspect-ratio: 340 / 470;
   overflow: hidden;
-  border: 2px solid #d5c8b9;
-  border-radius: 14px;
-  background:
-    radial-gradient(circle at 50% 35%, #fbf4ec 0 28%, transparent 29%),
-    #fff8ef;
-  padding: 16px;
-}
-
-.tarot-card::before,
-.tarot-card::after {
-  content: "";
-  position: absolute;
-  border: 1px solid #d5c8b9;
-  border-radius: inherit;
-  inset: 10px;
-}
-
-.tarot-card::after {
-  inset: auto 18px 18px 18px;
-  height: 8px;
   border: 0;
-  border-radius: 999px;
-  background: #b7c8ad;
+  border-radius: 12px;
+  background: #fff8ef;
 }
 
-.tarot-card span {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  height: 86px;
-  width: 86px;
-  place-items: center;
-  border: 2px solid #d5c8b9;
-  border-radius: 50%;
-  background: #f7eadb;
-  color: var(--brand);
-  font-size: 3.3rem;
-  font-weight: 1000;
+.tarot-card img {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
 .result-actions {
@@ -691,6 +678,11 @@ button:disabled {
 }
 
 @media (max-width: 760px) {
+  main::before {
+    height: 92px;
+    clip-path: polygon(0 58%, 24% 74%, 100% 28%, 100% 100%, 0 100%);
+  }
+
   .app-panel {
     height: auto;
     min-height: 620px;
@@ -713,6 +705,11 @@ button:disabled {
   .choice-grid {
     max-height: none;
     overflow: visible;
+  }
+
+  .choice-card {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .multi-choice-grid {
@@ -739,7 +736,9 @@ button:disabled {
   }
 
   .hero-heading {
-    font-size: clamp(2.8rem, 16vw, 4.5rem);
+    font-size: 3rem;
+    line-height: 0.98;
+    overflow-wrap: anywhere;
   }
 
   .hero-copy {
@@ -747,9 +746,27 @@ button:disabled {
   }
 
   .destination-row,
-  .steps-strip,
-  .tarot-grid {
+  .steps-strip {
     grid-template-columns: 1fr;
   }
 
+  .tarot-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .steps-strip {
+    padding-bottom: 100px;
+  }
+
+}
+
+@media (max-width: 380px) {
+  .hero-heading {
+    font-size: 2.6rem;
+  }
+
+  .card-cta {
+    padding-inline: 8px;
+  }
 }

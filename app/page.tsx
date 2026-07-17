@@ -59,7 +59,7 @@ type ScoreResult = {
 
 type TarotCard = {
   name: string;
-  symbol: string;
+  image: string;
 };
 
 const draftKey = "test_visa_draft_v1";
@@ -70,6 +70,7 @@ function getInitialDraft() {
     language: "en" as Language,
     destination: "" as DestinationCode | "",
     nationality: "",
+    nationalityConfirmed: false,
     step: 0,
     answers: {} as Record<string, AnswerValue>,
   };
@@ -83,6 +84,7 @@ function getInitialDraft() {
       language: (draft.language ?? "en") as Language,
       destination: (draft.destination ?? "") as DestinationCode | "",
       nationality: draft.nationality ?? "",
+      nationalityConfirmed: draft.nationalityConfirmed ?? Boolean(draft.nationality),
       step: draft.step ?? 0,
       answers: draft.answers ?? {},
     };
@@ -100,18 +102,18 @@ const copy = {
       "Answer a few plain questions and get a friendly visitor-visa readiness estimate in minutes.",
     destination: "Where do you want to travel?",
     nationality: "What is your nationality?",
-    nationalityPlaceholder: "Start typing a country",
+    nationalityPlaceholder: "Select your nationality",
     back: "Back",
     next: "Next",
     contactTitle: "Almost done. Where should eConsul reach you?",
     contactLead: "Where do you want us to send your results?",
     contactHint: "Add the best contact details, and we will use them to share your assessment result and help if you ask for expert support.",
-    resultTitle: "Your estimated visa chance",
+    resultTitle: "Your visa readiness estimate",
     consent:
       "I agree that eConsul may contact me by phone, email, or messaging apps about my visa assessment and related services.",
     showResult: "Show My Result",
     strengths: "What helps your profile",
-    risks: "What may reduce your chances",
+    risks: "What may weaken your profile",
     nextSteps: "What to do next",
     expert: "Continue with an eConsul Visa Expert",
     startOver: "Start Over",
@@ -124,38 +126,62 @@ const copy = {
     phone: "Phone with country code",
     emptyStrengths: "No strong positive factors captured yet.",
     emptyRisks: "No major risk factors captured in this beta.",
+    destinationKicker: "Pick your destination to begin",
+    assessment: "assessment",
+    usProfile: "B1/B2 visitor profile",
+    canadaProfile: "Visitor visa profile",
+    usName: "United States",
+    canadaName: "Canada",
+    stepOneTitle: "Answer simple questions",
+    stepOneText: "Plain questions, no jargon.",
+    stepTwoTitle: "Get your readiness score",
+    stepTwoText: "A clear estimate in minutes.",
+    stepThreeTitle: "See what to improve",
+    stepThreeText: "Strengths, risks, and next steps.",
   },
   ka: {
     start: "დაწყება",
     headline: "შეამოწმეთ სავიზო მზაობა",
     subhead:
-      "უპასუხეთ რამდენიმე მარტივ კითხვას და რამდენიმე წუთში მიიღეთ ვიზიტორის ვიზისთვის მზადყოფნის შეფასება.",
-    destination: "რომელ ქვეყანაში გსურთ გამგზავრება?",
+      "უპასუხეთ რამდენიმე მარტივ კითხვას და სულ რამდენიმე წუთში მიიღეთ ვიზიტორის ვიზისთვის თქვენი მზაობის წინასწარი შეფასება.",
+    destination: "სად გსურთ გამგზავრება?",
     nationality: "რომელი ქვეყნის მოქალაქე ხართ?",
-    nationalityPlaceholder: "ჩაწერეთ ქვეყანა",
+    nationalityPlaceholder: "აირჩიეთ მოქალაქეობა",
     back: "უკან",
     next: "შემდეგი",
-    contactTitle: "თითქმის დავასრულეთ.",
+    contactTitle: "თითქმის დასრულებულია",
     contactLead: "სად გსურთ გამოგიგზავნოთ შედეგი?",
-    contactHint: "მიუთითეთ თქვენთვის მოსახერხებელი საკონტაქტო ინფორმაცია. ამ მონაცემებს გამოვიყენებთ შეფასების გასაზიარებლად და ექსპერტის დახმარებისთვის, თუ ამას მოითხოვთ.",
-    resultTitle: "თქვენი სავიზო შეფასება",
+    contactHint: "მიუთითეთ თქვენთვის მოსახერხებელი საკონტაქტო ინფორმაცია. მას შედეგის გამოსაგზავნად და, თქვენი სურვილის შემთხვევაში, ექსპერტთან დასაკავშირებლად გამოვიყენებთ.",
+    resultTitle: "თქვენი სავიზო მზაობის შეფასება",
     consent:
-      "ვეთანხმები, რომ eConsul დამიკავშირდეს ტელეფონით, ელფოსტით ან მესენჯერებით ჩემი ვიზის შეფასებისა და დაკავშირებული სერვისების შესახებ.",
+      "ვეთანხმები, რომ eConsul დამიკავშირდეს ტელეფონით, ელფოსტით ან შეტყობინებების აპებით ჩემი სავიზო შეფასებისა და შესაბამისი მომსახურებების შესახებ.",
     showResult: "შედეგის ნახვა",
     strengths: "რა აძლიერებს თქვენს პროფილს",
-    risks: "რა შეიძლება ამცირებდეს შეფასებას",
+    risks: "რა შეიძლება ასუსტებდეს თქვენს პროფილს",
     nextSteps: "რა მოამზადოთ შემდეგ",
     expert: "eConsul-ის ვიზის ექსპერტთან გაგრძელება",
     startOver: "თავიდან დაწყება",
     disclaimer:
-      "ეს არის სავარაუდო შეფასება თქვენს პასუხებსა და Test Visa-ს წესებზე დაყრდნობით. ეს არ არის სახელმწიფო გადაწყვეტილება, იურიდიული რჩევა ან ვიზის მიღების გარანტია.",
+      "ეს არის წინასწარი შეფასება, რომელიც თქვენს პასუხებსა და Test Visa-ს შეფასების წესებს ეფუძნება. იგი არ წარმოადგენს სახელმწიფო ორგანოს გადაწყვეტილებას, იურიდიულ კონსულტაციას ან ვიზის გაცემის გარანტიას.",
     manual:
       "თქვენს პასუხებში ჩანს კომპლექსური რისკ-ფაქტორი. მხოლოდ პროცენტული შეფასება სრულ სურათს ვერ აჩვენებს, ამიტომ განაცხადამდე რეკომენდებულია ექსპერტის კონსულტაცია.",
     fullName: "სახელი და გვარი",
     email: "ელფოსტა",
     phone: "ტელეფონი ქვეყნის კოდით",
     emptyStrengths: "ამ ეტაპზე ძლიერი დადებითი ფაქტორი არ დაფიქსირდა.",
-    emptyRisks: "ამ ბეტა შეფასებაში მნიშვნელოვანი რისკი არ დაფიქსირდა.",
+    emptyRisks: "ამ წინასწარი შეფასებით მნიშვნელოვანი რისკ-ფაქტორი არ გამოვლენილა.",
+    destinationKicker: "დასაწყებად აირჩიეთ ქვეყანა",
+    assessment: "შეფასება",
+    usProfile: "B1/B2 ვიზიტორის ვიზა",
+    canadaProfile: "ვიზიტორის ვიზა",
+    usName: "ამერიკის შეერთებული შტატები",
+    canadaName: "კანადა",
+    stepOneTitle: "უპასუხეთ მარტივ კითხვებს",
+    stepOneText: "მარტივი და გასაგები კითხვები.",
+    stepTwoTitle: "მიიღეთ მზაობის შეფასება",
+    stepTwoText: "წინასწარი შეფასება რამდენიმე წუთში.",
+    stepThreeTitle: "ნახეთ, რა არის გასაუმჯობესებელი",
+    stepThreeText: "ძლიერი მხარეები, რისკები და შემდეგი ნაბიჯები.",
   },
 } satisfies Record<Language, Record<string, string>>;
 
@@ -214,7 +240,7 @@ const sharedQuestions: Question[] = [
     type: "single_choice",
     text: {
       en: "If you applied for this destination before, what happened last time?",
-      ka: "თუ ამ მიმართულებაზე ვიზა გქონდათ მოთხოვნილი, რა შედეგი იყო ბოლოს?",
+      ka: "თუ ამ ქვეყნის ვიზაზე ადრე შეგიტანიათ განაცხადი, რა შედეგი მიიღეთ ბოლოს?",
     },
     options: [
       label("never_applied", "Never applied before", "არასდროს შემიტანია"),
@@ -227,20 +253,32 @@ const sharedQuestions: Question[] = [
     type: "single_choice",
     text: {
       en: "Have you ever had this destination's visa canceled or revoked?",
-      ka: "ოდესმე გაგიუქმდათ ამ ქვეყნის ვიზა?",
+      ka: "ოდესმე გაუუქმებიათ თქვენთვის ამ ქვეყნის ვიზა?",
+    },
+    options: yesNo(),
+  },
+  {
+    id: "immigration_violation",
+    type: "single_choice",
+    text: {
+      en: "Have you ever overstayed a visa, been deported, or been removed from any country?",
+      ka: "ოდესმე დაგირღვევიათ ვიზის ვადა, ან დაგიდეპორტებიათ რომელიმე ქვეყნიდან?",
     },
     options: yesNo(),
   },
   {
     id: "arrested",
     type: "single_choice",
-    text: { en: "Have you ever been arrested?", ka: "ოდესმე დაგაკავეს?" },
+    text: {
+      en: "Have you ever been arrested, charged, or convicted of an offense?",
+      ka: "ოდესმე დაუკავებიხართ, წაგიყენებიათ ბრალი ან ყოფილხართ მსჯავრდებული?",
+    },
     options: yesNo(),
   },
   {
     id: "occupation_status",
     type: "single_choice",
-    text: { en: "What is your occupation status?", ka: "როგორია თქვენი დასაქმების სტატუსი?" },
+    text: { en: "What is your occupation status?", ka: "რომელია თქვენი ამჟამინდელი საქმიანობის სტატუსი?" },
     options: [
       label("employed", "Employed", "დასაქმებული"),
       label("self_employed", "Self-employed", "თვითდასაქმებული"),
@@ -256,12 +294,21 @@ const sharedQuestions: Question[] = [
     options: yesNo(),
   },
   {
+    id: "trip_funds_documented",
+    type: "single_choice",
+    text: {
+      en: "Can you document enough funds to cover your planned trip?",
+      ka: "შეგიძლიათ დაგეგმილი მოგზაურობის ხარჯების დასაფარად საკმარისი თანხის დადასტურება?",
+    },
+    options: yesNo(),
+  },
+  {
     id: "monthly_salary_range",
     type: "single_choice",
     showIf: { questionId: "regular_monthly_income", equals: "yes" },
     text: {
-      en: "What is your approximate monthly salary range?",
-      ka: "დაახლოებით რა არის თქვენი თვიური ხელფასის დიაპაზონი?",
+      en: "What is your approximate monthly income range?",
+      ka: "რომელ დიაპაზონშია თქვენი საშუალო თვიური შემოსავალი?",
     },
     options: [
       label("under_500", "Under $500", "$500-ზე ნაკლები"),
@@ -273,20 +320,29 @@ const sharedQuestions: Question[] = [
   {
     id: "education_level",
     type: "single_choice",
-    text: { en: "What is your highest completed education?", ka: "რა არის თქვენი დასრულებული განათლების უმაღლესი დონე?" },
+    text: { en: "What is your highest completed education?", ka: "რა არის თქვენ მიერ დასრულებული განათლების უმაღლესი საფეხური?" },
     options: [
       label("high_school", "High school", "საშუალო სკოლა"),
       label("college", "College / bachelor's", "კოლეჯი / ბაკალავრი"),
       label("advanced", "Advanced degree", "მაგისტრი ან უფრო მაღალი"),
-      label("none", "No education selected", "არ მაქვს დასრულებული განათლება"),
+      label("none", "No completed formal education", "ფორმალური განათლება არ დამისრულებია"),
     ],
+  },
+  {
+    id: "home_country_commitments",
+    type: "single_choice",
+    text: {
+      en: "Do you have ongoing commitments that support your return home, such as work, study, dependents, or property?",
+      ka: "გაქვთ მუდმივი ვალდებულებები, რომლებიც სამშობლოში დაბრუნებას ადასტურებს, მაგალითად სამსახური, სწავლა, ოჯახის წევრებზე ზრუნვა ან ქონება?",
+    },
+    options: yesNo(),
   },
   {
     id: "immediate_relatives_destination",
     type: "single_choice",
     text: {
       en: "Do you have immediate relatives in the destination country?",
-      ka: "გყავთ ახლო ნათესავები დანიშნულების ქვეყანაში?",
+      ka: "გყავთ ოჯახის ახლო წევრი დანიშნულების ქვეყანაში?",
     },
     options: yesNo(),
   },
@@ -303,12 +359,6 @@ const configs: Record<DestinationCode, DestinationConfig> = {
     questions: [
       ...sharedQuestions,
       {
-        id: "interview_nervousness",
-        type: "single_choice",
-        text: { en: "Do you tend to get nervous during interviews?", ka: "გასაუბრებაზე ხშირად ნერვიულობთ?" },
-        options: yesNo(),
-      },
-      {
         id: "immigrant_petition_filed",
         type: "single_choice",
         text: {
@@ -319,23 +369,27 @@ const configs: Record<DestinationCode, DestinationConfig> = {
       },
     ],
     rules: [
-      rule("married", "yes", 7, "married", "positive", "Marriage can support home-country ties.", "Prepare marriage and family-tie evidence."),
+      rule("married", "yes", 3, "married", "positive", "Marriage can support home-country ties.", "Prepare marriage and family-tie evidence."),
       rule("international_travel", "yes", 7, "travel", "positive", "Prior international travel supports a credible travel profile.", "Collect passport stamps and prior travel records."),
+      rule("international_travel", "no", -4, "travel", "negative", "No prior international travel is a modest weakness.", "Strengthen your financial evidence and reasons to return home."),
       rule("previous_destination_visa_result", "issued", 7, "prior_visa", "positive", "A previous issued visa is a strong positive factor.", "Prepare copies of prior visas."),
       rule("previous_destination_visa_result", "refused", -7, "prior_refusal", "negative", "A previous refusal reduces this assessment.", "Prepare a clear explanation of what changed."),
       rule("destination_visa_revoked", "yes", -10, "revoked", "negative", "A revoked visa is a serious risk factor.", "Seek expert review before applying.", true),
+      rule("immigration_violation", "yes", -20, "immigration_violation", "negative", "A previous overstay, deportation, or removal is a critical risk factor.", "Get expert review and prepare the complete immigration history before applying.", true),
       rule("arrested", "yes", -10, "arrest", "negative", "Arrest history can create complex visa questions.", "Prepare full disclosure documents and get expert review.", true),
       rule("occupation_status", "unemployed", -6, "occupation", "negative", "No current occupation weakens stability evidence.", "Strengthen financial and home-country ties."),
-      rule("regular_monthly_income", "yes", 5, "income", "positive", "Regular income supports financial stability.", "Prepare payslips and bank statements."),
+      rule("regular_monthly_income", "yes", 4, "income", "positive", "Regular income supports financial stability.", "Prepare payslips and bank statements."),
       rule("regular_monthly_income", "no", -6, "income", "negative", "No regular income can weaken the profile.", "Prepare sponsor or savings evidence."),
-      rule("monthly_salary_range", "under_500", -4, "salary", "negative", "A lower salary range may require stronger savings or sponsor evidence.", "Prepare bank statements, savings proof, or sponsor documents."),
-      rule("monthly_salary_range", "500_1000", 2, "salary", "positive", "A stable salary range adds support to your financial profile.", "Prepare recent payslips and employment confirmation."),
-      rule("monthly_salary_range", "1000_2000", 5, "salary", "positive", "A stronger salary range supports financial stability.", "Prepare payslips, tax records, and bank statements."),
-      rule("monthly_salary_range", "over_2000", 8, "salary", "positive", "A high salary range is a strong financial stability signal.", "Prepare salary confirmation and bank statements."),
+      rule("trip_funds_documented", "yes", 5, "funds", "positive", "Documented trip funds support a credible travel plan.", "Prepare bank statements and a realistic trip budget."),
+      rule("trip_funds_documented", "no", -10, "funds", "negative", "Insufficient documented trip funds are a significant weakness.", "Build a clear funding plan before applying."),
+      rule("monthly_salary_range", "under_500", -3, "salary", "negative", "A lower income range may require stronger savings or sponsor evidence.", "Prepare bank statements, savings proof, or sponsor documents."),
+      rule("monthly_salary_range", "500_1000", 1, "salary", "positive", "A stable income range adds support to your financial profile.", "Prepare recent payslips and employment confirmation."),
+      rule("monthly_salary_range", "1000_2000", 3, "salary", "positive", "A stronger income range supports financial stability.", "Prepare payslips, tax records, and bank statements."),
+      rule("monthly_salary_range", "over_2000", 5, "salary", "positive", "A high income range is a strong financial stability signal.", "Prepare income confirmation and bank statements."),
       rule("education_level", "none", -6, "education", "negative", "No education selected weakens the profile.", "Prepare other evidence of stability."),
-      rule("interview_nervousness", "yes", -8, "interview", "negative", "Interview nervousness may affect how clearly you explain your trip.", "Practice your travel purpose and ties explanation."),
-      rule("interview_nervousness", "no", 5, "interview", "positive", "Interview confidence supports a clearer application story.", "Prepare concise answers and evidence."),
-      rule("immediate_relatives_destination", "no", 6, "relatives", "positive", "No immediate relatives in the destination can reduce overstay concerns.", "Document your reason for returning home."),
+      rule("home_country_commitments", "yes", 7, "home_ties", "positive", "Ongoing commitments support a credible reason to return home.", "Prepare documents showing your work, study, dependents, or property."),
+      rule("home_country_commitments", "no", -7, "home_ties", "negative", "Limited return commitments can weaken non-immigrant intent.", "Strengthen and document your reasons to return home."),
+      rule("immediate_relatives_destination", "no", 3, "relatives", "positive", "No immediate relatives in the destination can reduce overstay concerns.", "Document your reason for returning home."),
       rule("immigrant_petition_filed", "yes", -6, "petition", "negative", "An immigrant petition can raise non-immigrant intent questions.", "Get expert review of your application strategy."),
     ],
   },
@@ -381,16 +435,21 @@ const configs: Record<DestinationCode, DestinationConfig> = {
       rule("visited_related_country", "no", -1, "visited_us", "negative", "No U.S. travel removes a useful support factor.", "Strengthen financial evidence."),
       rule("previous_destination_visa_result", "issued", 1, "prior_visa", "positive", "A previous issued visa helps your profile.", "Prepare prior visa copies."),
       rule("previous_destination_visa_result", "refused", -1, "prior_refusal", "negative", "A previous refusal is a risk factor.", "Explain what changed since refusal."),
-      rule("destination_visa_revoked", "yes", -1, "revoked", "negative", "A revoked visa is a serious risk factor.", "Seek expert review before applying.", true),
-      rule("arrested", "yes", -1, "arrest", "negative", "Arrest history can create complex visa questions.", "Prepare full disclosure documents.", true),
+      rule("destination_visa_revoked", "yes", -4, "revoked", "negative", "A revoked visa is a serious risk factor.", "Seek expert review before applying.", true),
+      rule("immigration_violation", "yes", -5, "immigration_violation", "negative", "A previous overstay, deportation, or removal is a critical risk factor.", "Get expert review and prepare the complete immigration history before applying.", true),
+      rule("arrested", "yes", -4, "arrest", "negative", "Arrest history can create complex visa questions.", "Prepare full disclosure documents.", true),
       rule("occupation_status", "unemployed", -1, "occupation", "negative", "No current occupation weakens stability evidence.", "Strengthen home-country ties."),
       rule("regular_monthly_income", "yes", 1, "income", "positive", "Regular income supports financial stability.", "Prepare payslips and statements."),
       rule("regular_monthly_income", "no", -1, "income", "negative", "No regular income can weaken the profile.", "Prepare sponsor or savings evidence."),
+      rule("trip_funds_documented", "yes", 2, "funds", "positive", "Documented trip funds support a credible travel plan.", "Prepare bank statements and a realistic trip budget."),
+      rule("trip_funds_documented", "no", -3, "funds", "negative", "Insufficient documented trip funds weaken the application.", "Build a clear funding plan before applying."),
       rule("monthly_salary_range", "under_500", -1, "salary", "negative", "A lower salary range may require stronger financial evidence.", "Prepare bank statements, savings proof, or sponsor documents."),
       rule("monthly_salary_range", "500_1000", 0, "salary", "positive", "A stable salary range gives some support to your profile.", "Prepare recent payslips and employment confirmation."),
       rule("monthly_salary_range", "1000_2000", 1, "salary", "positive", "A stronger salary range supports financial stability.", "Prepare payslips and bank statements."),
       rule("monthly_salary_range", "over_2000", 2, "salary", "positive", "A high salary range is a strong financial stability signal.", "Prepare salary confirmation and bank statements."),
       rule("education_level", "none", -1, "education", "negative", "No education selected weakens the profile.", "Prepare other stability evidence."),
+      rule("home_country_commitments", "yes", 2, "home_ties", "positive", "Ongoing commitments support a credible reason to return home.", "Prepare documents showing your work, study, dependents, or property."),
+      rule("home_country_commitments", "no", -2, "home_ties", "negative", "Limited return commitments can weaken temporary-resident intent.", "Strengthen and document your reasons to return home."),
       rule("bank_statement_available", "yes", 2, "bank", "positive", "Bank statements are important financial evidence.", "Prepare recent bank statements."),
       rule("bank_statement_available", "no", -2, "bank", "negative", "Missing bank statements can significantly weaken the file.", "Collect statements before applying."),
       rule("immediate_relatives_destination", "no", 1, "relatives", "positive", "No immediate relatives in Canada can reduce overstay concerns.", "Document your return plans."),
@@ -400,16 +459,24 @@ const configs: Record<DestinationCode, DestinationConfig> = {
 };
 
 const nationalities = [
-  "Georgia",
-  "Armenia",
-  "Azerbaijan",
-  "Turkey",
-  "Ukraine",
-  "India",
-  "Philippines",
-  "United Arab Emirates",
-  "Russia",
-  "Other",
+  label("Georgia", "Georgia", "საქართველო"),
+  label("Armenia", "Armenia", "სომხეთი"),
+  label("Azerbaijan", "Azerbaijan", "აზერბაიჯანი"),
+  label("Turkey", "Turkey", "თურქეთი"),
+  label("Ukraine", "Ukraine", "უკრაინა"),
+  label("Russia", "Russia", "რუსეთი"),
+  label("Kazakhstan", "Kazakhstan", "ყაზახეთი"),
+  label("Uzbekistan", "Uzbekistan", "უზბეკეთი"),
+  label("India", "India", "ინდოეთი"),
+  label("China", "China", "ჩინეთი"),
+  label("Philippines", "Philippines", "ფილიპინები"),
+  label("United Arab Emirates", "United Arab Emirates", "არაბთა გაერთიანებული საამიროები"),
+  label("Israel", "Israel", "ისრაელი"),
+  label("United States", "United States", "ამერიკის შეერთებული შტატები"),
+  label("Canada", "Canada", "კანადა"),
+  label("United Kingdom", "United Kingdom", "გაერთიანებული სამეფო"),
+  label("European Union", "European Union country", "ევროკავშირის ქვეყანა"),
+  label("Other", "Other nationality", "სხვა მოქალაქეობა"),
 ];
 
 function yesNo() {
@@ -469,27 +536,27 @@ function makePublicId() {
 const tarotDeck = [
   {
     name: "The Sun",
-    symbol: "☀",
+    image: "/tarot-cards/sun.png",
   },
   {
     name: "The Star",
-    symbol: "✦",
+    image: "/tarot-cards/star.png",
   },
   {
     name: "The Wheel",
-    symbol: "◉",
+    image: "/tarot-cards/compass.png",
   },
   {
     name: "The Moon",
-    symbol: "☾",
+    image: "/tarot-cards/moon.png",
   },
   {
     name: "The Passport",
-    symbol: "▣",
+    image: "/tarot-cards/passport.png",
   },
   {
-    name: "The Anchor",
-    symbol: "⌂",
+    name: "The Homeward Path",
+    image: "/tarot-cards/home.png",
   },
 ];
 
@@ -501,11 +568,11 @@ function scoreAssessment(config: DestinationConfig, answers: Record<string, Answ
   const matched = config.rules.filter((ruleItem) => String(answers[ruleItem.questionId]) === ruleItem.answerValue);
   const education = answers.education_level;
   if (education && education !== "none") {
-    matched.push(rule("education_level", String(education), config.code === "USA" ? 6 : 1, "education", "positive", "Recognized education supports your profile.", "Prepare diplomas or certificates."));
+    matched.push(rule("education_level", String(education), config.code === "USA" ? 3 : 1, "education", "positive", "Recognized education supports your profile.", "Prepare diplomas or certificates."));
   }
   const occupation = answers.occupation_status;
   if (occupation && occupation !== "unemployed") {
-    matched.push(rule("occupation_status", String(occupation), config.code === "USA" ? 6 : 1, "occupation", "positive", "Occupation or study supports stability evidence.", "Prepare employment, business, study, or retirement documents."));
+    matched.push(rule("occupation_status", String(occupation), config.code === "USA" ? 5 : 1, "occupation", "positive", "Occupation or study supports stability evidence.", "Prepare employment, business, study, or retirement documents."));
   }
   if (answers.international_travel === "yes") {
     const count = Number(answers.countries_visited_count || 0);
@@ -528,10 +595,15 @@ function scoreAssessment(config: DestinationConfig, answers: Record<string, Answ
   }
 
   const adjustment = matched.reduce((sum, factor) => sum + factor.adjustment, 0);
-  const score =
+  let score =
     config.scoringMethod === "baseline_adjustment"
       ? clamp((config.baselineScore ?? 50) + adjustment, 5, 95)
       : clamp(mapPointsToScore(adjustment), 5, 95);
+
+  // These answers require case-specific review; a high automated score would be misleading.
+  if (answers.destination_visa_revoked === "yes") score = Math.min(score, 35);
+  if (answers.arrested === "yes") score = Math.min(score, 45);
+  if (answers.immigration_violation === "yes") score = Math.min(score, 25);
 
   const resultCategory = category(score);
   return {
@@ -588,17 +660,20 @@ function factorExplanation(item: Rule, language: Language) {
   if (language === "en") return item.explanation;
   const map: Record<string, string> = {
     married: "ოჯახური მდგომარეობა შეიძლება აჩვენებდეს კავშირს საცხოვრებელ ქვეყანასთან.",
-    travel: "საერთაშორისო მოგზაურობის ისტორია აძლიერებს მოგზაურის პროფილს.",
+    travel: item.direction === "positive" ? "საერთაშორისო მოგზაურობის ისტორია აძლიერებს მოგზაურის პროფილს." : "საერთაშორისო მოგზაურობის გამოცდილების არქონა პროფილის ზომიერი სისუსტეა.",
     travel_depth: "რამდენიმე ქვეყანაში მოგზაურობა დადებითად აჩვენებს თქვენს სამოგზაურო გამოცდილებას.",
     screened_travel: "ძლიერი სავიზო ან სასაზღვრო კონტროლის მქონე ქვეყნებში მოგზაურობა დამატებით აძლიერებს თქვენს სანდოობას.",
     prior_visa: "ადრე მიღებული ვიზა დადებითი ფაქტორია.",
     prior_refusal: "წინა უარი ამცირებს შეფასებას და საჭიროებს ახსნას.",
     revoked: "გაუქმებული ვიზა მნიშვნელოვანი რისკ-ფაქტორია.",
+    immigration_violation: "ვიზის ვადის დარღვევა, დეპორტაცია ან ქვეყნიდან გაძევება მნიშვნელოვანი რისკ-ფაქტორია.",
     arrest: "დაკავების ისტორია შეიძლება რთულ სავიზო კითხვებს ქმნიდეს.",
     occupation: item.direction === "positive" ? "დასაქმება ან სწავლა აძლიერებს სტაბილურობის მტკიცებულებას." : "ამჟამინდელი საქმიანობის არქონა ასუსტებს სტაბილურობის მტკიცებულებას.",
     income: item.direction === "positive" ? "რეგულარული შემოსავალი აძლიერებს ფინანსურ სტაბილურობას." : "რეგულარული შემოსავლის არქონა ფინანსურ ნაწილს ასუსტებს.",
+    funds: item.direction === "positive" ? "მოგზაურობისთვის საკმარისი თანხის დადასტურება აძლიერებს თქვენს ფინანსურ პროფილს." : "მოგზაურობის ხარჯების დაუდასტურებლობა განაცხადის მნიშვნელოვანი სისუსტეა.",
     salary: item.direction === "positive" ? "ხელფასის მითითებული დიაპაზონი მხარს უჭერს ფინანსურ სტაბილურობას." : "ხელფასის დაბალი დიაპაზონი უფრო ძლიერ ფინანსურ მტკიცებულებას მოითხოვს.",
     education: item.direction === "positive" ? "დასრულებული განათლება დადებითად მოქმედებს პროფილის სტაბილურობაზე." : "განათლების არმითითება ან არქონა ასუსტებს პროფილს.",
+    home_ties: item.direction === "positive" ? "სამშობლოში არსებული მუდმივი ვალდებულებები დაბრუნების განზრახვას ამყარებს." : "სამშობლოში დაბრუნების დამადასტურებელი კავშირები ამ ეტაპზე სუსტად ჩანს.",
     interview: item.direction === "positive" ? "გასაუბრებაზე თავდაჯერებულობა განაცხადის უკეთ ახსნაში გეხმარებათ." : "გასაუბრებაზე ნერვიულობამ შეიძლება პასუხების სიცხადეზე იმოქმედოს.",
     relatives: "დანიშნულების ქვეყანაში ახლო ნათესავების არყოლამ შეიძლება შეამციროს დარჩენის რისკის აღქმა.",
     petition: "საიმიგრაციო პეტიციამ შეიძლება გაართულოს ვიზიტორის ვიზის განზრახვის შეფასება.",
@@ -613,17 +688,20 @@ function factorAction(item: Rule, language: Language) {
   if (language === "en") return item.action;
   const map: Record<string, string> = {
     married: "მოამზადეთ ქორწინების მოწმობა და ოჯახური კავშირების მტკიცებულება.",
-    travel: "მოამზადეთ პასპორტის შტამპები, წინა ვიზები და მოგზაურობის ისტორია.",
+    travel: item.direction === "positive" ? "მოამზადეთ პასპორტის შტამპები, წინა ვიზები და მოგზაურობის ისტორია." : "გააძლიერეთ ფინანსური მტკიცებულებები და სამშობლოში დაბრუნების მიზეზების დასაბუთება.",
     travel_depth: "მოამზადეთ პასპორტის შტამპები და წინა ვიზების ასლები.",
     screened_travel: "მოამზადეთ წინა ვიზების ასლები, შესვლის შტამპები და მოგზაურობის თარიღები.",
     prior_visa: "მოამზადეთ ადრე მიღებული ვიზების ასლები.",
     prior_refusal: "მოამზადეთ მოკლე ახსნა, რა შეიცვალა წინა უარის შემდეგ.",
     revoked: "განაცხადამდე მიიღეთ ექსპერტის კონსულტაცია და მოამზადეთ სრული ინფორმაცია.",
+    immigration_violation: "განაცხადამდე ექსპერტთან განიხილეთ სრული საიმიგრაციო ისტორია და მოამზადეთ შესაბამისი დოკუმენტები.",
     arrest: "მოამზადეთ სრული დოკუმენტები და მიმართეთ ექსპერტს განაცხადამდე.",
     occupation: "მოამზადეთ დასაქმების, ბიზნესის, სწავლის ან პენსიის დამადასტურებელი დოკუმენტები.",
     income: "მოამზადეთ ხელფასის ცნობები და საბანკო ამონაწერები.",
+    funds: "მოამზადეთ საბანკო ამონაწერები და მოგზაურობის რეალისტური ბიუჯეტი.",
     salary: "მოამზადეთ ხელფასის ცნობა, საბანკო ამონაწერები და საჭიროების შემთხვევაში სპონსორის დოკუმენტები.",
     education: "მოამზადეთ დიპლომები, სერტიფიკატები ან სხვა სტაბილურობის მტკიცებულება.",
+    home_ties: "მოამზადეთ სამსახურის, სწავლის, ოჯახის წევრებზე ზრუნვის ან ქონების დამადასტურებელი დოკუმენტები.",
     interview: "წინასწარ მოამზადეთ მოგზაურობის მიზნისა და დაბრუნების მიზეზების მოკლე ახსნა.",
     relatives: "მოამზადეთ დაბრუნების გეგმისა და ადგილობრივი კავშირების მტკიცებულება.",
     petition: "განაცხადის სტრატეგია ექსპერტთან გადაამოწმეთ.",
@@ -639,6 +717,7 @@ export default function Home() {
   const [language, setLanguage] = useState<Language>("en");
   const [destination, setDestination] = useState<DestinationCode | "">("");
   const [nationality, setNationality] = useState("");
+  const [nationalityConfirmed, setNationalityConfirmed] = useState(false);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>({});
   const [contact, setContact] = useState<Contact>({ name: "", email: "", phone: "", consent: false });
@@ -648,7 +727,7 @@ export default function Home() {
   const config = destination ? configs[destination] : null;
   const questions = useMemo(() => (config ? visibleQuestions(config, answers) : []), [answers, config]);
   const activeQuestion = questions[step];
-  const isContactStep = config && nationality && step >= questions.length && !result;
+  const isContactStep = config && nationalityConfirmed && step >= questions.length && !result;
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -656,6 +735,7 @@ export default function Home() {
       setLanguage(draft.language);
       setDestination(draft.destination);
       setNationality(draft.nationality);
+      setNationalityConfirmed(draft.nationalityConfirmed);
       setStep(draft.step);
       setAnswers(draft.answers);
       setDraftRestored(true);
@@ -665,11 +745,24 @@ export default function Home() {
 
   useEffect(() => {
     if (!draftRestored) return;
-    window.localStorage.setItem(draftKey, JSON.stringify({ language, destination, nationality, step, answers }));
-  }, [answers, destination, draftRestored, language, nationality, step]);
+    window.localStorage.setItem(
+      draftKey,
+      JSON.stringify({ language, destination, nationality, nationalityConfirmed, step, answers }),
+    );
+  }, [answers, destination, draftRestored, language, nationality, nationalityConfirmed, step]);
 
   function chooseAnswer(questionId: string, value: AnswerValue) {
-    setAnswers((current) => ({ ...current, [questionId]: value }));
+    setAnswers((current) => {
+      const nextAnswers = { ...current, [questionId]: value };
+      if (questionId === "international_travel" && value !== "yes") {
+        delete nextAnswers.countries_visited_count;
+        delete nextAnswers.visited_countries;
+      }
+      if (questionId === "regular_monthly_income" && value !== "yes") {
+        delete nextAnswers.monthly_salary_range;
+      }
+      return nextAnswers;
+    });
   }
 
   function toggleMultiAnswer(questionId: string, value: string) {
@@ -697,6 +790,7 @@ export default function Home() {
       return;
     }
     if (step > 0) setStep((current) => current - 1);
+    else setNationalityConfirmed(false);
   }
 
   function submitContact() {
@@ -709,11 +803,22 @@ export default function Home() {
   function startOver() {
     setDestination("");
     setNationality("");
+    setNationalityConfirmed(false);
     setStep(0);
     setAnswers({});
     setContact({ name: "", email: "", phone: "", consent: false });
     setResult(null);
     window.localStorage.removeItem(draftKey);
+  }
+
+  function startDestination(code: DestinationCode) {
+    setDestination(code);
+    setNationality("");
+    setNationalityConfirmed(false);
+    setStep(0);
+    setAnswers({});
+    setContact({ name: "", email: "", phone: "", consent: false });
+    setResult(null);
   }
 
   const waText =
@@ -754,11 +859,10 @@ export default function Home() {
               <img alt="" src="/econsul-tarot-animation.gif" />
             </div>
             <div className="hero-copy">
-              <div className="inline-flex rounded-full bg-[#75b241] px-4 py-2 text-sm font-black text-white">
-                Smart visa check
-              </div>
               <div className="space-y-5">
-                <h1 className="hero-heading">Check Your Visa <span>Chances</span></h1>
+                <h1 className="hero-heading">
+                  {language === "en" ? <>Check Your Visa <span>Chances</span></> : <>შეაფასეთ ვიზის მიღების <span>შანსები</span></>}
+                </h1>
                 <p className="max-w-lg text-lg leading-8 text-[#6b6a62]">{t.subhead}</p>
               </div>
             </div>
@@ -768,15 +872,15 @@ export default function Home() {
           <section className={destination ? "app-panel quiz-panel" : "app-panel destination-section"}>
             {!destination && (
               <div className="flow-space">
-                <p className="section-kicker">Pick your destination to begin</p>
+                <p className="section-kicker">{t.destinationKicker}</p>
                 <h2>{t.destination}</h2>
                 <div className="destination-row">
                   {(Object.keys(configs) as DestinationCode[]).map((code) => (
-                    <button className="destination-card" key={code} onClick={() => setDestination(code)}>
+                    <button className="destination-card" key={code} onClick={() => startDestination(code)}>
                       <span className="flag" aria-hidden="true">{code === "USA" ? "🇺🇸" : "🇨🇦"}</span>
                       <span>
-                        <strong>{configs[code].label}</strong>
-                        <small>{code === "USA" ? "B1/B2 visitor profile" : "Visitor visa profile"}</small>
+                        <strong>{code === "USA" ? t.usName : t.canadaName}</strong>
+                        <small>{code === "USA" ? t.usProfile : t.canadaProfile}</small>
                       </span>
                       <span className="card-cta">
                         {t.start}
@@ -788,33 +892,31 @@ export default function Home() {
               </div>
             )}
 
-            {destination && !nationality && (
+            {destination && !nationalityConfirmed && (
               <div className="flow-space">
                 <Progress current={1} total={4} />
                 <h2>{t.nationality}</h2>
-                <input
-                  className="text-input"
-                  list="nationalities"
+                <select
+                  className="text-input nationality-select"
                   onChange={(event) => setNationality(event.target.value)}
-                  placeholder={t.nationalityPlaceholder}
                   value={nationality}
-                />
-                <datalist id="nationalities">
+                >
+                  <option value="">{t.nationalityPlaceholder}</option>
                   {nationalities.map((item) => (
-                    <option key={item} value={item} />
+                    <option key={item.value} value={item.value}>{item.label[language]}</option>
                   ))}
-                </datalist>
+                </select>
                 <div className="actions">
-                  <button className="ghost-button" onClick={() => setDestination("")}>{t.back}</button>
-                  <button className="primary-button" disabled={!nationality} onClick={() => setStep(0)}>{t.next}</button>
+                  <button className="ghost-button" onClick={() => { setDestination(""); setNationality(""); }}>{t.back}</button>
+                  <button className="primary-button" disabled={!nationality} onClick={() => { setStep(0); setNationalityConfirmed(true); }}>{t.next}</button>
                 </div>
               </div>
             )}
 
-            {activeQuestion && !result && nationality && (
+            {activeQuestion && !result && nationalityConfirmed && (
               <div className="flow-space">
                 <Progress current={Math.min(step + 2, questions.length + 1)} total={questions.length + 2} />
-                <p className="eyebrow">{config?.label} assessment</p>
+                <p className="eyebrow">{destination === "USA" ? t.usName : t.canadaName} {t.assessment}</p>
                 <h2>{activeQuestion.text[language] || activeQuestion.text.en}</h2>
                 {activeQuestion.type === "single_choice" && (
                   <div className="choice-grid">
@@ -822,10 +924,7 @@ export default function Home() {
                       <button
                         className={`choice-card ${answers[activeQuestion.id] === option.value ? "selected" : ""}`}
                         key={option.value}
-                        onClick={() => {
-                          chooseAnswer(activeQuestion.id, option.value);
-                          window.setTimeout(next, 120);
-                        }}
+                        onClick={() => chooseAnswer(activeQuestion.id, option.value)}
                       >
                         <strong>{option.label[language] || option.label.en}</strong>
                       </button>
@@ -895,7 +994,8 @@ export default function Home() {
                   <div className="tarot-grid" aria-label="Visa tarot cards">
                     {result.tarotCards.map((card) => (
                       <article className="tarot-card" key={card.name} aria-label={card.name}>
-                        <span aria-hidden="true">{card.symbol}</span>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img alt="" src={card.image} />
                       </article>
                     ))}
                   </div>
@@ -934,18 +1034,18 @@ export default function Home() {
             <section className="steps-strip">
               <div>
                 <span aria-hidden="true">?</span>
-                <strong>Answer simple questions</strong>
-                <p>Plain questions, no jargon.</p>
+                <strong>{t.stepOneTitle}</strong>
+                <p>{t.stepOneText}</p>
               </div>
               <div>
                 <span aria-hidden="true">%</span>
-                <strong>Get your readiness score</strong>
-                <p>A clear estimate in minutes.</p>
+                <strong>{t.stepTwoTitle}</strong>
+                <p>{t.stepTwoText}</p>
               </div>
               <div>
                 <span aria-hidden="true">✓</span>
-                <strong>See what to improve</strong>
-                <p>Strengths, risks, and next steps.</p>
+                <strong>{t.stepThreeTitle}</strong>
+                <p>{t.stepThreeText}</p>
               </div>
             </section>
           </>
