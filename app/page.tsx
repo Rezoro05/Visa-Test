@@ -925,6 +925,42 @@ const tarotDeck = [
     name: "The Homeward Path",
     image: "/tarot-cards/home.png",
   },
+  {
+    name: "The Journey",
+    image: "/tarot-cards/journey.png",
+  },
+  {
+    name: "The Key",
+    image: "/tarot-cards/key.png",
+  },
+  {
+    name: "The Bridge",
+    image: "/tarot-cards/bridge.png",
+  },
+  {
+    name: "The Map",
+    image: "/tarot-cards/map.png",
+  },
+  {
+    name: "The Lantern",
+    image: "/tarot-cards/lantern.png",
+  },
+  {
+    name: "The Gate",
+    image: "/tarot-cards/gate.png",
+  },
+  {
+    name: "The Anchor",
+    image: "/tarot-cards/anchor.png",
+  },
+  {
+    name: "The Letter",
+    image: "/tarot-cards/letter.png",
+  },
+  {
+    name: "The Globe",
+    image: "/tarot-cards/globe.png",
+  },
 ];
 
 function makeTarotCards(): TarotCard[] {
@@ -1328,13 +1364,18 @@ export default function Home() {
             <span>Test Visa beta</span>
           </button>
           <div className="rounded-full border border-[#d5ded9] bg-white p-1">
-            {(["en", "ka"] as Language[]).map((lang) => (
+            {([
+              { code: "en", flag: "🇬🇧" },
+              { code: "ka", flag: "🇬🇪" },
+            ] as const).map(({ code, flag }) => (
               <button
-                className={`rounded-full px-3 py-1.5 text-sm font-bold ${language === lang ? "bg-[#5d9e43] text-white" : "text-[#53635f]"}`}
-                key={lang}
-                onClick={() => setLanguage(lang)}
+                aria-label={code === "en" ? "Change language to English" : "ენის ქართულად შეცვლა"}
+                aria-pressed={language === code}
+                className={`inline-flex size-8 items-center justify-center rounded-full text-sm ${language === code ? "bg-[#5d9e43]" : "bg-transparent"}`}
+                key={code}
+                onClick={() => setLanguage(code)}
               >
-                {lang.toUpperCase()}
+                <span aria-hidden="true" className="leading-none">{flag}</span>
               </button>
             ))}
           </div>
