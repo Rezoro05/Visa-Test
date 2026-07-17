@@ -119,7 +119,6 @@ export const georgianTranslations: Record<string, string> = {
   "Do you have a specific itinerary, dates, accommodation, and reason for this trip?": "გაქვთ კონკრეტული მარშრუტი, თარიღები, საცხოვრებელი ადგილი და ამ მოგზაურობის მიზეზი?",
   "Do you have bank statements for the past 3-6 months?": "გაქვთ ბანკის ამონაწერები ბოლო 3-6 თვის განმავლობაში?",
   "Do you have immediate relatives in the destination country?": "გყავთ უახლოესი ნათესავები დანიშნულების ქვეყანაში?",
-  "Do you have ongoing commitments that support your return home, such as work, study, dependents, or property?": "გაქვთ მიმდინარე ვალდებულებები, რომლებიც ხელს უწყობს თქვენს დაბრუნებას სამშობლოში, როგორიცაა სამუშაო, სწავლა, კმაყოფაზე მყოფი პირები ან საკუთრება?",
   "Do you have regular monthly income?": "გაქვთ რეგულარული ყოველთვიური შემოსავალი?",
   "Document each important change since refusal.": "დაადოკუმენტირეთ თითოეული მნიშვნელოვანი ცვლილება უარის შემდეგ.",
   "Document each important change since the refusal.": "დაადოკუმენტირეთ თითოეული მნიშვნელოვანი ცვლილება უარის შემდეგ.",
@@ -469,5 +468,18 @@ export const georgianTranslations: Record<string, string> = {
   "Your answers show material weaknesses that could lead to refusal unless they are addressed.": "თქვენი პასუხები აჩვენებს მნიშვნელოვან სისუსტეებს, რამაც შეიძლება გამოიწვიოს უარი, თუ ისინი არ გამოსწორდება.",
   "Your profile has credible strengths, but one or more decision factors need stronger evidence.": "თქვენს პროფილს აქვს სარწმუნო ძლიერი მხარეები, მაგრამ ერთი ან მეტი გადაწყვეტილების ფაქტორი უფრო მყარ მტკიცებულებას საჭიროებს.",
   "Zambia": "ზამბია",
-  "Zimbabwe": "ზიმბაბვე"
+  "Zimbabwe": "ზიმბაბვე",
+  "What ongoing commitments do you have right now?": "რა მიმდინარე ვალდებულებები გაქვთ ამჟამად?",
+  "Employment / work": "სამსახური / დასაქმება",
+  "Business ownership or self-employment": "ბიზნესი ან თვითდასაქმება",
+  "Studies": "სწავლა",
+  "Dependants or family care": "კმაყოფაზე მყოფი პირები ან ოჯახის წევრებზე ზრუნვა",
+  "Property or long-term housing": "ქონება ან გრძელვადიანი საცხოვრებელი",
+  "Significant financial obligations": "მნიშვნელოვანი ფინანსური ვალდებულებები",
+  "Other ongoing commitment": "სხვა მიმდინარე ვალდებულება",
+  "None of these": "არცერთი ჩამოთვლილთაგან",
+  "Your selected ongoing commitments support your intention to return home after the visit.": "თქვენ მიერ არჩეული მიმდინარე ვალდებულებები ვიზიტის შემდეგ სამშობლოში დაბრუნების განზრახვას ამყარებს.",
+  "No ongoing commitments were selected, which weakens evidence that you will return home after the visit.": "მიმდინარე ვალდებულებები არ არის მითითებული, რაც ვიზიტის შემდეგ სამშობლოში დაბრუნების მტკიცებულებას ასუსტებს.",
+  "Prepare documents for each selected commitment, such as employment, study, family, property, business, or financial records.": "მოამზადეთ თითოეული არჩეული ვალდებულების დამადასტურებელი საბუთები, მაგალითად დასაქმების, სწავლის, ოჯახის, ქონების, ბიზნესის ან ფინანსური ჩანაწერები.",
+  "Strengthen and document other concrete reasons to return home.": "გააძლიერეთ და დოკუმენტურად დაადასტურეთ სამშობლოში დაბრუნების სხვა კონკრეტული მიზეზები."
 };

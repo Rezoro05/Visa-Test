@@ -63,8 +63,8 @@ type TarotCard = {
   image: string;
 };
 
-const draftKey = "test_visa_draft_v5";
-const whatsappNumber = "995555123456";
+const draftKey = "test_visa_draft_v6";
+const whatsappNumber = "995596114488";
 
 function getInitialDraft() {
   const blankDraft = {
@@ -391,12 +391,21 @@ const sharedQuestions: Question[] = [
   },
   {
     id: "home_country_commitments",
-    type: "single_choice",
+    type: "multi_choice",
     text: {
-      en: "Do you have ongoing commitments that support your return home, such as work, study, dependents, or property?",
-      ka: "გაქვთ მუდმივი ვალდებულებები, რომლებიც სამშობლოში დაბრუნებას ადასტურებს, მაგალითად სამსახური, სწავლა, ოჯახის წევრებზე ზრუნვა ან ქონება?",
+      en: "What ongoing commitments do you have right now?",
+      ka: "რა მიმდინარე ვალდებულებები გაქვთ ამჟამად?",
     },
-    options: yesNo(),
+    options: [
+      label("employment", "Employment / work", "სამსახური / დასაქმება"),
+      label("business", "Business ownership or self-employment", "ბიზნესი ან თვითდასაქმება"),
+      label("study", "Studies", "სწავლა"),
+      label("dependants", "Dependants or family care", "კმაყოფაზე მყოფი პირები ან ოჯახის წევრებზე ზრუნვა"),
+      label("property", "Property or long-term housing", "ქონება ან გრძელვადიანი საცხოვრებელი"),
+      label("financial", "Significant financial obligations", "მნიშვნელოვანი ფინანსური ვალდებულებები"),
+      label("other_commitment", "Other ongoing commitment", "სხვა მიმდინარე ვალდებულება"),
+      label("none", "None of these", "არცერთი ჩამოთვლილთაგან"),
+    ],
   },
   {
     id: "immediate_relatives_destination",
@@ -453,8 +462,6 @@ const configs: Record<DestinationCode, DestinationConfig> = {
       rule("monthly_salary_range", "500_1000", 1, "salary", "positive", "A stable income range adds support to your financial profile.", "Prepare recent payslips and employment confirmation."),
       rule("monthly_salary_range", "1000_2000", 2, "salary", "positive", "A stronger income range supports financial stability.", "Prepare payslips, tax records, and bank statements."),
       rule("monthly_salary_range", "over_2000", 3, "salary", "positive", "A higher income range supports financial stability when consistent with records.", "Prepare income confirmation and bank statements."),
-      rule("home_country_commitments", "yes", 10, "home_ties", "positive", "Documented work, home, financial, or family commitments strongly support intent to return.", "Prepare documents proving the commitments that require your return."),
-      rule("home_country_commitments", "no", -12, "home_ties", "negative", "Limited documented ties make temporary intent harder to establish.", "Strengthen and document concrete reasons to return home."),
     ],
   },
   CANADA: {
@@ -520,8 +527,6 @@ const configs: Record<DestinationCode, DestinationConfig> = {
       rule("monthly_salary_range", "500_1000", 1, "salary", "positive", "A stable income gives some financial support.", "Prepare payslips and employment confirmation."),
       rule("monthly_salary_range", "1000_2000", 2, "salary", "positive", "A stronger income range supports financial stability.", "Prepare payslips and bank statements."),
       rule("monthly_salary_range", "over_2000", 3, "salary", "positive", "A higher consistent income supports financial stability.", "Prepare income confirmation and statements."),
-      rule("home_country_commitments", "yes", 10, "home_ties", "positive", "Documented job, home, financial, or family commitments strongly support departure at the end of the visit.", "Prepare documents proving the commitments requiring your return."),
-      rule("home_country_commitments", "no", -12, "home_ties", "negative", "Limited documented ties make departure at the end of the visit harder to establish.", "Strengthen and document concrete reasons to return home."),
       rule("bank_statement_available", "yes", 6, "bank", "positive", "Several months of bank history support the financial assessment.", "Prepare complete recent bank statements."),
       rule("bank_statement_available", "no", -8, "bank", "negative", "Missing bank history significantly weakens financial evidence.", "Collect complete statements before applying."),
       rule("immigration_process_started", "yes", -3, "immigration", "negative", "A separate immigration process requires a clear temporary-visit explanation.", "Explain how you will still leave Canada at the end of this visit."),
@@ -591,8 +596,6 @@ const configs: Record<DestinationCode, DestinationConfig> = {
       rule("monthly_salary_range", "500_1000", 1, "salary", "positive", "A stable income gives some financial support.", "Prepare payslips and employment confirmation."),
       rule("monthly_salary_range", "1000_2000", 2, "salary", "positive", "A stronger income range supports financial stability.", "Prepare payslips and bank statements."),
       rule("monthly_salary_range", "over_2000", 3, "salary", "positive", "A higher consistent income supports financial stability.", "Prepare income confirmation and statements."),
-      rule("home_country_commitments", "yes", 11, "home_ties", "positive", "Documented work, study, family, financial, or property commitments strongly support departure from the UK.", "Prepare documents proving the commitments requiring your return."),
-      rule("home_country_commitments", "no", -13, "home_ties", "negative", "Limited documented home-country circumstances make departure harder to establish.", "Strengthen and document concrete reasons to return home."),
       rule("bank_statement_available", "yes", 6, "bank", "positive", "Several months of bank history support the source and availability of funds.", "Prepare complete recent bank statements and explain unusual deposits."),
       rule("bank_statement_available", "no", -9, "bank", "negative", "Missing bank history significantly weakens financial evidence.", "Collect complete statements before applying."),
       rule("frequent_destination_visits", "yes", -8, "visit_pattern", "negative", "Frequent or extended UK visits may raise concerns that the UK is becoming your main home.", "Explain the pattern, purpose, time spent outside the UK, and continuing home-country commitments."),
@@ -941,6 +944,30 @@ function scoreAssessment(config: DestinationConfig, answers: Record<string, Answ
   if (occupation && occupation !== "unemployed") {
     matched.push(rule("occupation_status", String(occupation), config.code === "CANADA" ? 3 : 4, "occupation", "positive", "Work, business, study, or retirement status supports home-country stability.", "Prepare employment, business, study, or retirement documents."));
   }
+  const commitments = Array.isArray(answers.home_country_commitments) ? answers.home_country_commitments : [];
+  if (commitments.includes("none")) {
+    matched.push(rule(
+      "home_country_commitments",
+      "none",
+      config.code === "UK" ? -13 : -12,
+      "home_ties",
+      "negative",
+      "No ongoing commitments were selected, which weakens evidence that you will return home after the visit.",
+      "Strengthen and document other concrete reasons to return home.",
+    ));
+  } else if (commitments.length > 0) {
+    const commitmentCap = config.code === "UK" ? 11 : 10;
+    const commitmentAdjustment = Math.min(commitmentCap, 2 + commitments.length * 3);
+    matched.push(rule(
+      "home_country_commitments",
+      String(commitments.length),
+      commitmentAdjustment,
+      "home_ties",
+      "positive",
+      "Your selected ongoing commitments support your intention to return home after the visit.",
+      "Prepare documents for each selected commitment, such as employment, study, family, property, business, or financial records.",
+    ));
+  }
   if (answers.international_travel === "yes") {
     const count = Number(answers.countries_visited_count || 0);
     const travelBonus = Math.min(Math.floor(count / 5) * config.travelPointsPerGroup, config.travelCap);
@@ -1182,9 +1209,19 @@ export default function Home() {
   function toggleMultiAnswer(questionId: string, value: string) {
     setAnswers((current) => {
       const selected = Array.isArray(current[questionId]) ? current[questionId] : [];
-      const nextSelected = selected.includes(value)
-        ? selected.filter((item) => item !== value)
-        : [...selected, value];
+      let nextSelected: string[];
+      if (questionId === "home_country_commitments" && value === "none") {
+        nextSelected = selected.includes("none") ? [] : ["none"];
+      } else if (questionId === "home_country_commitments") {
+        const commitments = selected.filter((item) => item !== "none");
+        nextSelected = commitments.includes(value)
+          ? commitments.filter((item) => item !== value)
+          : [...commitments, value];
+      } else {
+        nextSelected = selected.includes(value)
+          ? selected.filter((item) => item !== value)
+          : [...selected, value];
+      }
       const nextAnswers = { ...current, [questionId]: nextSelected };
       const destinationValue = destination ? visitedDestinationValues[destination] : "";
       if (questionId === "visited_countries" && !nextSelected.includes(destinationValue)) {
