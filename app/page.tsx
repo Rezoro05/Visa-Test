@@ -403,7 +403,7 @@ const sharedQuestions: Question[] = [
       label("dependants", "Dependants or family care", "კმაყოფაზე მყოფი პირები ან ოჯახის წევრებზე ზრუნვა"),
       label("property", "Property or long-term housing", "ქონება ან გრძელვადიანი საცხოვრებელი"),
       label("financial", "Significant financial obligations", "მნიშვნელოვანი ფინანსური ვალდებულებები"),
-      label("other_commitment", "Other ongoing commitment", "სხვა მიმდინარე ვალდებულება"),
+      label("other_commitment", "Other ongoing commitments", "სხვა მიმდინარე ვალდებულებები"),
       label("none", "None of these", "არცერთი ჩამოთვლილთაგან"),
     ],
   },
@@ -955,18 +955,45 @@ function scoreAssessment(config: DestinationConfig, answers: Record<string, Answ
       "No ongoing commitments were selected, which weakens evidence that you will return home after the visit.",
       "Strengthen and document other concrete reasons to return home.",
     ));
-  } else if (commitments.length > 0) {
-    const commitmentCap = config.code === "UK" ? 11 : 10;
-    const commitmentAdjustment = Math.min(commitmentCap, 2 + commitments.length * 3);
-    matched.push(rule(
-      "home_country_commitments",
-      String(commitments.length),
-      commitmentAdjustment,
-      "home_ties",
-      "positive",
-      "Your selected ongoing commitments support your intention to return home after the visit.",
-      "Prepare documents for each selected commitment, such as employment, study, family, property, business, or financial records.",
-    ));
+  } else {
+    const positiveCommitments = commitments.filter(
+      (commitment) => commitment !== "financial" && commitment !== "other_commitment",
+    );
+    if (positiveCommitments.length > 0) {
+      const commitmentCap = config.code === "UK" ? 11 : 10;
+      const commitmentAdjustment = Math.min(commitmentCap, 2 + positiveCommitments.length * 3);
+      matched.push(rule(
+        "home_country_commitments",
+        String(positiveCommitments.length),
+        commitmentAdjustment,
+        "home_ties",
+        "positive",
+        "Your selected ongoing commitments support your intention to return home after the visit.",
+        "Prepare documents for each selected commitment, such as employment, study, family, property, or business records.",
+      ));
+    }
+    if (commitments.includes("financial")) {
+      matched.push(rule(
+        "home_country_commitments",
+        "financial",
+        -5,
+        "financial_pressure",
+        "negative",
+        "Significant financial obligations may create pressure that weakens the stated temporary travel plan.",
+        "Explain the obligation, payment plan, and why it does not create an incentive to remain abroad.",
+      ));
+    }
+    if (commitments.includes("other_commitment")) {
+      matched.push(rule(
+        "home_country_commitments",
+        "other_commitment",
+        -3,
+        "unclear_commitment",
+        "negative",
+        "An unspecified ongoing commitment cannot be treated as a clear home-country tie and introduces uncertainty.",
+        "Describe the commitment clearly and provide evidence showing that it requires your return home.",
+      ));
+    }
   }
   if (answers.international_travel === "yes") {
     const count = Number(answers.countries_visited_count || 0);

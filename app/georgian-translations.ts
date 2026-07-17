@@ -476,10 +476,15 @@ export const georgianTranslations: Record<string, string> = {
   "Dependants or family care": "კმაყოფაზე მყოფი პირები ან ოჯახის წევრებზე ზრუნვა",
   "Property or long-term housing": "ქონება ან გრძელვადიანი საცხოვრებელი",
   "Significant financial obligations": "მნიშვნელოვანი ფინანსური ვალდებულებები",
-  "Other ongoing commitment": "სხვა მიმდინარე ვალდებულება",
+  "Other ongoing commitments": "სხვა მიმდინარე ვალდებულებები",
   "None of these": "არცერთი ჩამოთვლილთაგან",
   "Your selected ongoing commitments support your intention to return home after the visit.": "თქვენ მიერ არჩეული მიმდინარე ვალდებულებები ვიზიტის შემდეგ სამშობლოში დაბრუნების განზრახვას ამყარებს.",
   "No ongoing commitments were selected, which weakens evidence that you will return home after the visit.": "მიმდინარე ვალდებულებები არ არის მითითებული, რაც ვიზიტის შემდეგ სამშობლოში დაბრუნების მტკიცებულებას ასუსტებს.",
   "Prepare documents for each selected commitment, such as employment, study, family, property, business, or financial records.": "მოამზადეთ თითოეული არჩეული ვალდებულების დამადასტურებელი საბუთები, მაგალითად დასაქმების, სწავლის, ოჯახის, ქონების, ბიზნესის ან ფინანსური ჩანაწერები.",
-  "Strengthen and document other concrete reasons to return home.": "გააძლიერეთ და დოკუმენტურად დაადასტურეთ სამშობლოში დაბრუნების სხვა კონკრეტული მიზეზები."
+  "Prepare documents for each selected commitment, such as employment, study, family, property, or business records.": "მოამზადეთ თითოეული არჩეული ვალდებულების დამადასტურებელი საბუთები, მაგალითად დასაქმების, სწავლის, ოჯახის, ქონების ან ბიზნესის ჩანაწერები.",
+  "Strengthen and document other concrete reasons to return home.": "გააძლიერეთ და დოკუმენტურად დაადასტურეთ სამშობლოში დაბრუნების სხვა კონკრეტული მიზეზები.",
+  "Significant financial obligations may create pressure that weakens the stated temporary travel plan.": "მნიშვნელოვანმა ფინანსურმა ვალდებულებებმა შეიძლება შექმნას ზეწოლა, რომელიც დროებითი მოგზაურობის გეგმას ასუსტებს.",
+  "Explain the obligation, payment plan, and why it does not create an incentive to remain abroad.": "განმარტეთ ვალდებულება, გადახდის გეგმა და რატომ არ ქმნის ის საზღვარგარეთ დარჩენის მოტივაციას.",
+  "An unspecified ongoing commitment cannot be treated as a clear home-country tie and introduces uncertainty.": "დაუზუსტებელი მიმდინარე ვალდებულება სამშობლოსთან მკაფიო კავშირად ვერ ჩაითვლება და დამატებით გაურკვევლობას ქმნის.",
+  "Describe the commitment clearly and provide evidence showing that it requires your return home.": "მკაფიოდ აღწერეთ ვალდებულება და წარმოადგინეთ მტკიცებულება, რომ ის სამშობლოში დაბრუნებას მოითხოვს."
 };
