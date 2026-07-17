@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { georgianTranslations } from "./georgian-translations";
 
 type Language = "en" | "ka";
-type DestinationCode = "USA" | "CANADA";
+type DestinationCode = "USA" | "CANADA" | "UK";
 type AnswerValue = string | number | string[];
 
 type Question = {
@@ -62,7 +63,7 @@ type TarotCard = {
   image: string;
 };
 
-const draftKey = "test_visa_draft_v3";
+const draftKey = "test_visa_draft_v5";
 const whatsappNumber = "995555123456";
 
 function getInitialDraft() {
@@ -100,7 +101,6 @@ const copy = {
     headline: "Check Your Visa Chances",
     subhead:
       "Answer a few plain questions and get an evidence-based visitor-visa approval estimate in minutes.",
-    destination: "Where do you want to travel?",
     nationality: "What is your nationality?",
     nationalityPlaceholder: "Select your nationality",
     back: "Back",
@@ -127,12 +127,13 @@ const copy = {
     phone: "Phone with country code",
     emptyStrengths: "No strong positive factors captured yet.",
     emptyRisks: "No material risk factors identified from these answers.",
-    destinationKicker: "Pick your destination to begin",
     assessment: "assessment",
     usProfile: "B1/B2 visitor profile",
     canadaProfile: "Visitor visa profile",
+    ukProfile: "Standard Visitor visa profile",
     usName: "United States",
     canadaName: "Canada",
+    ukName: "United Kingdom",
     stepOneTitle: "Answer simple questions",
     stepOneText: "Plain questions, no jargon.",
     stepTwoTitle: "Get your approval estimate",
@@ -144,8 +145,7 @@ const copy = {
     start: "დაწყება",
     headline: "შეამოწმეთ სავიზო მზაობა",
     subhead:
-      "უპასუხეთ რამდენიმე მარტივ კითხვას და სულ რამდენიმე წუთში მიიღეთ ოფიციალურ კრიტერიუმებზე დაფუძნებული ვიზის მიღების სავარაუდო შეფასება.",
-    destination: "სად გსურთ გამგზავრება?",
+      "უპასუხეთ რამდენიმე მარტივ კითხვას და გაიგე ვიზის მიღების ალბათობა",
     nationality: "რომელი ქვეყნის მოქალაქე ხართ?",
     nationalityPlaceholder: "აირჩიეთ მოქალაქეობა",
     back: "უკან",
@@ -172,12 +172,13 @@ const copy = {
     phone: "ტელეფონი ქვეყნის კოდით",
     emptyStrengths: "ამ ეტაპზე ძლიერი დადებითი ფაქტორი არ დაფიქსირდა.",
     emptyRisks: "ამ წინასწარი შეფასებით მნიშვნელოვანი რისკ-ფაქტორი არ გამოვლენილა.",
-    destinationKicker: "დასაწყებად აირჩიეთ ქვეყანა",
     assessment: "შეფასება",
     usProfile: "B1/B2 ვიზიტორის ვიზა",
     canadaProfile: "ვიზიტორის ვიზა",
+    ukProfile: "სტანდარტული ვიზიტორის ვიზა",
     usName: "ამერიკის შეერთებული შტატები",
     canadaName: "კანადა",
+    ukName: "გაერთიანებული სამეფო",
     stepOneTitle: "უპასუხეთ მარტივ კითხვებს",
     stepOneText: "მარტივი და გასაგები კითხვები.",
     stepTwoTitle: "მიიღეთ ვიზის ალბათობის შეფასება",
@@ -269,7 +270,6 @@ const sharedQuestions: Question[] = [
       label("japan", "Japan", "იაპონია"),
       label("south_korea", "South Korea", "სამხრეთ კორეა"),
       label("uae", "United Arab Emirates", "არაბთა გაერთიანებული საამიროები"),
-      label("turkey", "Turkey", "თურქეთი"),
       label("other", "Other country", "სხვა ქვეყანა"),
     ],
   },
@@ -417,30 +417,7 @@ const configs: Record<DestinationCode, DestinationConfig> = {
     baselineScore: 50,
     travelPointsPerGroup: 2,
     travelCap: 6,
-    questions: [
-      ...sharedQuestions,
-      {
-        id: "application_location",
-        type: "single_choice",
-        text: {
-          en: "Where will you apply for the U.S. visa?",
-          ka: "სად შეიტანთ განაცხადს აშშ-ის ვიზაზე?",
-        },
-        options: [
-          label("nationality_or_residence", "In my country of nationality or residence", "ჩემი მოქალაქეობის ან საცხოვრებელ ქვეყანაში"),
-          label("third_country", "In another country", "სხვა ქვეყანაში"),
-        ],
-      },
-      {
-        id: "immigrant_petition_filed",
-        type: "single_choice",
-        text: {
-          en: "Has anyone ever filed an immigrant visa petition for you?",
-          ka: "ოდესმე ვინმეს შეუტანია თქვენთვის საიმიგრაციო პეტიცია?",
-        },
-        options: yesNo(),
-      },
-    ],
+    questions: [...sharedQuestions],
     rules: [
       rule("trip_purpose", "tourism", 2, "purpose", "positive", "Tourism is a legitimate visitor purpose when the plan is specific and temporary.", "Prepare a concise itinerary and evidence supporting the trip."),
       rule("trip_purpose", "business", 2, "purpose", "positive", "A documented business meeting or event can support a legitimate temporary purpose.", "Prepare the event, employer, and itinerary evidence."),
@@ -478,9 +455,6 @@ const configs: Record<DestinationCode, DestinationConfig> = {
       rule("monthly_salary_range", "over_2000", 3, "salary", "positive", "A higher income range supports financial stability when consistent with records.", "Prepare income confirmation and bank statements."),
       rule("home_country_commitments", "yes", 10, "home_ties", "positive", "Documented work, home, financial, or family commitments strongly support intent to return.", "Prepare documents proving the commitments that require your return."),
       rule("home_country_commitments", "no", -12, "home_ties", "negative", "Limited documented ties make temporary intent harder to establish.", "Strengthen and document concrete reasons to return home."),
-      rule("application_location", "nationality_or_residence", 2, "application_location", "positive", "Applying in the country of nationality or residence generally makes local ties easier to assess.", "Prepare evidence of residence where you apply."),
-      rule("application_location", "third_country", -5, "application_location", "negative", "Applying outside the country of nationality or residence can make qualifications harder to demonstrate.", "Explain why you are applying there and document lawful residence if applicable."),
-      rule("immigrant_petition_filed", "yes", -8, "petition", "negative", "An immigrant petition can intensify questions about temporary intent.", "Get expert review of your application strategy."),
     ],
   },
   CANADA: {
@@ -551,6 +525,77 @@ const configs: Record<DestinationCode, DestinationConfig> = {
       rule("bank_statement_available", "yes", 6, "bank", "positive", "Several months of bank history support the financial assessment.", "Prepare complete recent bank statements."),
       rule("bank_statement_available", "no", -8, "bank", "negative", "Missing bank history significantly weakens financial evidence.", "Collect complete statements before applying."),
       rule("immigration_process_started", "yes", -3, "immigration", "negative", "A separate immigration process requires a clear temporary-visit explanation.", "Explain how you will still leave Canada at the end of this visit."),
+    ],
+  },
+  UK: {
+    code: "UK",
+    label: "United Kingdom",
+    scoringMethod: "baseline_adjustment",
+    baselineScore: 50,
+    travelPointsPerGroup: 2,
+    travelCap: 6,
+    questions: [
+      ...sharedQuestions,
+      {
+        id: "bank_statement_available",
+        type: "single_choice",
+        text: {
+          en: "Do you have bank statements for the past 3-6 months?",
+          ka: "გაქვთ ბოლო 3-6 თვის საბანკო ამონაწერი?",
+        },
+        options: yesNo(),
+      },
+      {
+        id: "frequent_destination_visits",
+        type: "single_choice",
+        text: {
+          en: "Have you made frequent or long visits to the UK during the past 2 years?",
+          ka: "ბოლო 2 წლის განმავლობაში ხშირად ან ხანგრძლივად ყოფილხართ გაერთიანებულ სამეფოში?",
+        },
+        options: yesNo(),
+      },
+    ],
+    rules: [
+      rule("trip_purpose", "tourism", 2, "purpose", "positive", "Tourism is a permitted visitor purpose when the plan is specific and temporary.", "Prepare a concise itinerary and evidence supporting the trip."),
+      rule("trip_purpose", "family_visit", 2, "purpose", "positive", "Visiting family or friends is permitted when the visit is genuine and temporary.", "Prepare host details, accommodation plans, and evidence of your return plans."),
+      rule("trip_purpose", "business", 2, "purpose", "positive", "A documented permitted business activity can support a genuine visitor purpose.", "Prepare invitation, employer, event, and itinerary evidence."),
+      rule("trip_purpose", "medical", -2, "purpose", "negative", "Private medical travel requires detailed treatment, duration, and funding evidence.", "Prepare provider confirmation, projected costs, treatment duration, and funding evidence."),
+      rule("trip_purpose", "other", -4, "purpose", "negative", "An unclear or potentially non-permitted purpose needs stronger explanation.", "Confirm that the planned activity is permitted and document it precisely."),
+      rule("trip_duration", "under_2_weeks", 4, "duration", "positive", "A short stay is easier to align with a limited visitor purpose.", "Match your itinerary and budget to the stated dates."),
+      rule("trip_duration", "two_to_four_weeks", 2, "duration", "positive", "A clearly planned stay of up to four weeks can support a temporary visit.", "Match your itinerary and budget to the stated dates."),
+      rule("trip_duration", "one_to_three_months", -4, "duration", "negative", "A longer stay requires stronger evidence of purpose, funding, and departure.", "Explain why this duration is necessary and document the full budget."),
+      rule("trip_duration", "over_three_months", -8, "duration", "negative", "A visit over three months may raise questions about making the UK a main home.", "Reassess the duration or prepare unusually strong purpose and departure evidence."),
+      rule("specific_trip_plan", "yes", 7, "trip_plan", "positive", "Specific dates, accommodation, activities, and costs support a genuine visit.", "Keep the itinerary consistent throughout the application."),
+      rule("specific_trip_plan", "no", -11, "trip_plan", "negative", "A vague trip plan weakens the genuine visitor assessment.", "Create a realistic itinerary with dates, accommodation, activities, and costs."),
+      rule("trip_funding_source", "self", 2, "funding_source", "positive", "Self-funding can support financial independence when the funds are documented.", "Prepare statements showing the funds are genuinely available to you."),
+      rule("international_travel", "yes", 4, "travel", "positive", "Prior compliant international travel supports credibility.", "Gather visas, stamps, and travel records."),
+      rule("international_travel", "no", -3, "travel", "negative", "No prior international travel leaves less evidence of travel compliance.", "Strengthen the trip purpose, finances, and reasons to return home."),
+      rule("previous_travel_compliance", "yes", 5, "travel_compliance", "positive", "Following previous visa and entry conditions supports credibility.", "Prepare prior visas and entry or exit records."),
+      rule("previous_travel_compliance", "no", -20, "travel_compliance", "negative", "A previous breach of immigration conditions is a critical risk.", "Get expert review and prepare the complete immigration history.", true),
+      rule("previous_destination_visa_result", "issued", 7, "prior_visa", "positive", "A previously issued UK visa with compliant use supports the profile.", "Prepare the prior visa and UK travel records."),
+      rule("previous_destination_visa_result", "refused", -8, "prior_refusal", "negative", "A previous UK refusal remains relevant unless the concerns have been addressed.", "Explain and document what changed since the refusal."),
+      rule("circumstances_changed_since_refusal", "yes", 3, "refusal_change", "positive", "Materially improved circumstances can help address a prior refusal.", "Document each important change since the refusal."),
+      rule("circumstances_changed_since_refusal", "no", -8, "refusal_change", "negative", "Reapplying without meaningful change may repeat the same concerns.", "Delay reapplication until the refusal grounds are addressed."),
+      rule("destination_visa_revoked", "yes", -15, "revoked", "negative", "A canceled or revoked UK visa is a serious risk factor.", "Seek expert review before applying.", true),
+      rule("immigration_violation", "yes", -20, "immigration_violation", "negative", "A previous overstay, deportation, or removal is a critical suitability risk.", "Get expert review and prepare the complete immigration history.", true),
+      rule("arrested", "yes", -12, "arrest", "negative", "Criminal history may create suitability or disclosure issues.", "Prepare complete records and get expert review.", true),
+      rule("occupation_status", "unemployed", -7, "occupation", "negative", "No current occupation weakens an important home-country circumstance.", "Strengthen other financial and home-country evidence."),
+      rule("current_status_duration", "under_6_months", -3, "status_duration", "negative", "A recently started activity is a weaker established home-country circumstance.", "Prepare contracts, enrollment records, and leave evidence."),
+      rule("current_status_duration", "six_to_twenty_four_months", 2, "status_duration", "positive", "An established current activity supports stability.", "Prepare work, business, study, or retirement evidence."),
+      rule("current_status_duration", "over_two_years", 5, "status_duration", "positive", "Long-term work, business, study, or retirement status supports stability.", "Prepare evidence showing continuity."),
+      rule("regular_monthly_income", "yes", 4, "income", "positive", "Regular income supports financial stability.", "Prepare payslips and statements."),
+      rule("regular_monthly_income", "no", -5, "income", "negative", "No regular income weakens financial stability.", "Prepare genuine savings or documented sponsor evidence."),
+      rule("trip_funds_documented", "yes", 9, "funds", "positive", "Documented funds covering the visit and return journey support the application.", "Prepare bank statements and a realistic trip budget."),
+      rule("trip_funds_documented", "no", -16, "funds", "negative", "Insufficient documented funds are a major eligibility weakness.", "Build and document a credible funding plan before applying."),
+      rule("monthly_salary_range", "under_500", -3, "salary", "negative", "A lower income range may require stronger savings or sponsor evidence.", "Prepare statements, savings, or sponsor documents."),
+      rule("monthly_salary_range", "500_1000", 1, "salary", "positive", "A stable income gives some financial support.", "Prepare payslips and employment confirmation."),
+      rule("monthly_salary_range", "1000_2000", 2, "salary", "positive", "A stronger income range supports financial stability.", "Prepare payslips and bank statements."),
+      rule("monthly_salary_range", "over_2000", 3, "salary", "positive", "A higher consistent income supports financial stability.", "Prepare income confirmation and statements."),
+      rule("home_country_commitments", "yes", 11, "home_ties", "positive", "Documented work, study, family, financial, or property commitments strongly support departure from the UK.", "Prepare documents proving the commitments requiring your return."),
+      rule("home_country_commitments", "no", -13, "home_ties", "negative", "Limited documented home-country circumstances make departure harder to establish.", "Strengthen and document concrete reasons to return home."),
+      rule("bank_statement_available", "yes", 6, "bank", "positive", "Several months of bank history support the source and availability of funds.", "Prepare complete recent bank statements and explain unusual deposits."),
+      rule("bank_statement_available", "no", -9, "bank", "negative", "Missing bank history significantly weakens financial evidence.", "Collect complete statements before applying."),
+      rule("frequent_destination_visits", "yes", -8, "visit_pattern", "negative", "Frequent or extended UK visits may raise concerns that the UK is becoming your main home.", "Explain the pattern, purpose, time spent outside the UK, and continuing home-country commitments."),
     ],
   },
 };
@@ -779,6 +824,14 @@ function label(value: string, en: string, ka: string) {
   return { value, label: { en, ka } };
 }
 
+function translateEnglish(english: string, fallback = english) {
+  return georgianTranslations[english] ?? fallback;
+}
+
+function localizedText(text: Record<Language, string>, language: Language) {
+  return language === "en" ? text.en : translateEnglish(text.en, text.ka);
+}
+
 function rule(
   questionId: string,
   answerValue: string,
@@ -792,8 +845,21 @@ function rule(
   return { questionId, answerValue, adjustment, factorCode, direction, explanation, action, manualReview };
 }
 
+const visitedDestinationValues: Record<DestinationCode, string> = {
+  USA: "usa",
+  CANADA: "canada",
+  UK: "uk",
+};
+
+function hasVisitedDestination(config: DestinationConfig, answers: Record<string, AnswerValue>) {
+  const visitedCountries = Array.isArray(answers.visited_countries) ? answers.visited_countries : [];
+  return visitedCountries.includes(visitedDestinationValues[config.code]);
+}
+
 function visibleQuestions(config: DestinationConfig, answers: Record<string, AnswerValue>) {
   return config.questions.filter((question) => {
+    if (question.id === "destination_visa_revoked") return hasVisitedDestination(config, answers);
+    if (question.id === "frequent_destination_visits") return config.code === "UK" && hasVisitedDestination(config, answers);
     if (!question.showIf) return true;
     return answers[question.showIf.questionId] === question.showIf.equals;
   });
@@ -804,6 +870,12 @@ function category(score: number): ScoreResult["category"] {
   if (score >= 55) return "Moderate";
   if (score >= 35) return "Low";
   return "Very Low";
+}
+
+function scoreTone(score: number) {
+  if (score >= 70) return "high";
+  if (score >= 40) return "medium";
+  return "low";
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -857,10 +929,17 @@ function makeTarotCards(): TarotCard[] {
 }
 
 function scoreAssessment(config: DestinationConfig, answers: Record<string, AnswerValue>): ScoreResult {
-  const matched = config.rules.filter((ruleItem) => String(answers[ruleItem.questionId]) === ruleItem.answerValue);
+  const visitedDestination = hasVisitedDestination(config, answers);
+  const matched = config.rules.filter((ruleItem) => {
+    if (
+      (ruleItem.questionId === "destination_visa_revoked" || ruleItem.questionId === "frequent_destination_visits")
+      && !visitedDestination
+    ) return false;
+    return String(answers[ruleItem.questionId]) === ruleItem.answerValue;
+  });
   const occupation = answers.occupation_status;
   if (occupation && occupation !== "unemployed") {
-    matched.push(rule("occupation_status", String(occupation), config.code === "USA" ? 4 : 3, "occupation", "positive", "Work, business, study, or retirement status supports home-country stability.", "Prepare employment, business, study, or retirement documents."));
+    matched.push(rule("occupation_status", String(occupation), config.code === "CANADA" ? 3 : 4, "occupation", "positive", "Work, business, study, or retirement status supports home-country stability.", "Prepare employment, business, study, or retirement documents."));
   }
   if (answers.international_travel === "yes") {
     const count = Number(answers.countries_visited_count || 0);
@@ -870,7 +949,9 @@ function scoreAssessment(config: DestinationConfig, answers: Record<string, Answ
     }
     const visitedCountries = Array.isArray(answers.visited_countries) ? answers.visited_countries : [];
     const strongVisaCountries = new Set(["usa", "canada", "uk", "ireland", "schengen", "australia", "new_zealand", "japan", "south_korea"]);
-    const excludedCountries = new Set(config.code === "USA" ? ["usa"] : ["canada", "usa"]);
+    const excludedCountries = new Set(
+      config.code === "USA" ? ["usa"] : config.code === "CANADA" ? ["canada", "usa"] : ["uk"],
+    );
     const strongCountryCount = visitedCountries.filter(
       (country) => strongVisaCountries.has(country) && !excludedCountries.has(country),
     ).length;
@@ -889,7 +970,7 @@ function scoreAssessment(config: DestinationConfig, answers: Record<string, Answ
       : clamp(mapPointsToScore(adjustment), 5, 90);
 
   // These answers require case-specific review; a high automated score would be misleading.
-  if (answers.destination_visa_revoked === "yes") score = Math.min(score, 35);
+  if (visitedDestination && answers.destination_visa_revoked === "yes") score = Math.min(score, 35);
   if (answers.arrested === "yes") score = Math.min(score, 45);
   if (answers.immigration_violation === "yes") score = Math.min(score, 25);
   if (answers.previous_travel_compliance === "no") score = Math.min(score, 30);
@@ -917,32 +998,34 @@ function scoreAssessment(config: DestinationConfig, answers: Record<string, Answ
 
 function categoryLabel(value: ScoreResult["category"], language: Language) {
   if (language === "en") return value;
-  return {
+  const fallback = {
     High: "მაღალი",
     Moderate: "საშუალო",
     Low: "დაბალი",
     "Very Low": "ძალიან დაბალი",
   }[value];
+  return translateEnglish(value, fallback);
 }
 
 function resultExplanation(value: ScoreResult["category"], language: Language) {
-  if (language === "en") {
-    return value === "High"
-      ? "Your answers align well with the main factors officers use to assess a temporary visitor application."
-      : value === "Moderate"
-        ? "Your profile has credible strengths, but one or more decision factors need stronger evidence."
-        : value === "Low"
-          ? "Your answers show material weaknesses that could lead to refusal unless they are addressed."
-          : "Your answers show critical refusal or admissibility risks that need individual expert review.";
-  }
+  const english = value === "High"
+    ? "Your answers align well with the main factors officers use to assess a temporary visitor application."
+    : value === "Moderate"
+      ? "Your profile has credible strengths, but one or more decision factors need stronger evidence."
+      : value === "Low"
+        ? "Your answers show material weaknesses that could lead to refusal unless they are addressed."
+        : "Your answers show critical refusal or admissibility risks that need individual expert review.";
 
-  return value === "High"
+  if (language === "en") return english;
+
+  const fallback = value === "High"
     ? "თქვენი პასუხები კარგად შეესაბამება იმ ძირითად ფაქტორებს, რომლებსაც ოფიცერი დროებითი ვიზიტის განაცხადის შეფასებისას განიხილავს."
     : value === "Moderate"
       ? "თქვენს პროფილს აქვს დამაჯერებელი ძლიერი მხარეები, თუმცა ერთ ან რამდენიმე მნიშვნელოვან ფაქტორს უკეთესი დასაბუთება სჭირდება."
       : value === "Low"
         ? "თქვენს პასუხებში ჩანს მნიშვნელოვანი სისუსტეები, რომლებმაც მათი გამოსწორების გარეშე შესაძლოა უარი გამოიწვიოს."
         : "თქვენს პასუხებში ჩანს უარის ან ქვეყანაში დაუშვებლობის კრიტიკული რისკები, რომლებიც ექსპერტის ინდივიდუალურ შეფასებას საჭიროებს.";
+  return translateEnglish(english, fallback);
 }
 
 function factorExplanation(item: Rule, language: Language) {
@@ -969,12 +1052,11 @@ function factorExplanation(item: Rule, language: Language) {
     salary: item.direction === "positive" ? "ხელფასის მითითებული დიაპაზონი მხარს უჭერს ფინანსურ სტაბილურობას." : "ხელფასის დაბალი დიაპაზონი უფრო ძლიერ ფინანსურ მტკიცებულებას მოითხოვს.",
     home_ties: item.direction === "positive" ? "სამშობლოში არსებული მუდმივი ვალდებულებები დაბრუნების განზრახვას ამყარებს." : "სამშობლოში დაბრუნების დამადასტურებელი კავშირები ამ ეტაპზე სუსტად ჩანს.",
     relatives: "დანიშნულების ქვეყანაში ახლო ნათესავების არყოლამ შეიძლება შეამციროს დარჩენის რისკის აღქმა.",
-    petition: "საიმიგრაციო პეტიციამ შეიძლება გაართულოს ვიზიტორის ვიზის განზრახვის შეფასება.",
     bank: item.direction === "positive" ? "საბანკო ამონაწერები მნიშვნელოვანი ფინანსური მტკიცებულებაა." : "საბანკო ამონაწერების არქონა განაცხადს ასუსტებს.",
     immigration: "დაწყებულმა საიმიგრაციო პროცესმა შეიძლება ვიზიტორის განზრახვა გაართულოს.",
-    application_location: item.direction === "positive" ? "მოქალაქეობის ან საცხოვრებელ ქვეყანაში განაცხადი ადგილობრივი კავშირების შეფასებას ამარტივებს." : "მესამე ქვეყანაში განაცხადისას კვალიფიკაციის დამტკიცება შესაძლოა უფრო რთული იყოს.",
+    visit_pattern: "გაერთიანებულ სამეფოში ხშირი ან ხანგრძლივი ვიზიტები შეიძლება აჩენდეს კითხვას, ხომ არ იქცა ქვეყანა თქვენს ძირითად საცხოვრებლად.",
   };
-  return map[item.factorCode] ?? item.explanation;
+  return translateEnglish(item.explanation, map[item.factorCode] ?? item.explanation);
 }
 
 function factorAction(item: Rule, language: Language) {
@@ -1001,12 +1083,11 @@ function factorAction(item: Rule, language: Language) {
     salary: "მოამზადეთ ხელფასის ცნობა, საბანკო ამონაწერები და საჭიროების შემთხვევაში სპონსორის დოკუმენტები.",
     home_ties: "მოამზადეთ სამსახურის, სწავლის, ოჯახის წევრებზე ზრუნვის ან ქონების დამადასტურებელი დოკუმენტები.",
     relatives: "მოამზადეთ დაბრუნების გეგმისა და ადგილობრივი კავშირების მტკიცებულება.",
-    petition: "განაცხადის სტრატეგია ექსპერტთან გადაამოწმეთ.",
     bank: "მოამზადეთ ბოლო თვეების საბანკო ამონაწერები.",
     immigration: "განაცხადამდე გადაამოწმეთ სტრატეგია ექსპერტთან.",
-    application_location: "მოამზადეთ იმ ქვეყანაში კანონიერი ცხოვრების დამადასტურებელი დოკუმენტები, სადაც განაცხადს შეიტანთ.",
+    visit_pattern: "განმარტეთ ვიზიტების სიხშირე, მიზანი, გაერთიანებული სამეფოს გარეთ გატარებული დრო და სამშობლოში არსებული მუდმივი ვალდებულებები.",
   };
-  return map[item.factorCode] ?? item.action;
+  return translateEnglish(item.action, map[item.factorCode] ?? item.action);
 }
 
 export default function Home() {
@@ -1020,17 +1101,30 @@ export default function Home() {
   const [contact, setContact] = useState<Contact>({ name: "", email: "", phone: "", consent: false });
   const [result, setResult] = useState<ScoreResult | null>(null);
 
-  const t = copy[language];
+  const t: Record<string, string> = language === "en"
+    ? copy.en
+    : Object.fromEntries(
+      Object.entries(copy.en).map(([key, english]) => [
+        key,
+        translateEnglish(english, copy.ka[key as keyof typeof copy.ka]),
+      ]),
+    );
+  const destinationUi: Record<DestinationCode, { flag: string; name: string; profile: string }> = {
+    USA: { flag: "🇺🇸", name: t.usName, profile: t.usProfile },
+    CANADA: { flag: "🇨🇦", name: t.canadaName, profile: t.canadaProfile },
+    UK: { flag: "🇬🇧", name: t.ukName, profile: t.ukProfile },
+  };
   const nationalityOptions = useMemo(() => {
-    const displayNames = new Intl.DisplayNames([language === "ka" ? "ka" : "en"], { type: "region" });
+    const displayNames = new Intl.DisplayNames(["en"], { type: "region" });
 
     return countryCodes
-      .map((code) => ({
-        value: code,
-        label: language === "ka"
-          ? (georgianCountryNames[code] ?? displayNames.of(code) ?? code)
-          : (code === "XK" ? "Kosovo" : (displayNames.of(code) ?? code)),
-      }))
+      .map((code) => {
+        const english = code === "XK" ? "Kosovo" : (displayNames.of(code) ?? code);
+        return {
+          value: code,
+          label: language === "ka" ? translateEnglish(english, georgianCountryNames[code] ?? english) : english,
+        };
+      })
       .sort((first, second) => first.label.localeCompare(second.label, language === "ka" ? "ka" : "en"));
   }, [language]);
   const config = destination ? configs[destination] : null;
@@ -1060,6 +1154,11 @@ export default function Home() {
     );
   }, [answers, destination, draftRestored, language, nationality, nationalityConfirmed, step]);
 
+  useEffect(() => {
+    if (!result) return;
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [result]);
+
   function chooseAnswer(questionId: string, value: AnswerValue) {
     setAnswers((current) => {
       const nextAnswers = { ...current, [questionId]: value };
@@ -1067,6 +1166,8 @@ export default function Home() {
         delete nextAnswers.countries_visited_count;
         delete nextAnswers.visited_countries;
         delete nextAnswers.previous_travel_compliance;
+        delete nextAnswers.destination_visa_revoked;
+        delete nextAnswers.frequent_destination_visits;
       }
       if (questionId === "regular_monthly_income" && value !== "yes") {
         delete nextAnswers.monthly_salary_range;
@@ -1084,7 +1185,13 @@ export default function Home() {
       const nextSelected = selected.includes(value)
         ? selected.filter((item) => item !== value)
         : [...selected, value];
-      return { ...current, [questionId]: nextSelected };
+      const nextAnswers = { ...current, [questionId]: nextSelected };
+      const destinationValue = destination ? visitedDestinationValues[destination] : "";
+      if (questionId === "visited_countries" && !nextSelected.includes(destinationValue)) {
+        delete nextAnswers.destination_visa_revoked;
+        delete nextAnswers.frequent_destination_visits;
+      }
+      return nextAnswers;
     });
   }
 
@@ -1146,7 +1253,7 @@ export default function Home() {
       <section className="mx-auto flex min-h-screen w-full max-w-[1380px] flex-col px-5 py-5 sm:px-8">
         <header className="flex items-center justify-between gap-4">
           <button
-            aria-label={language === "ka" ? "მთავარ გვერდზე დაბრუნება" : "Go to home page"}
+            aria-label={language === "ka" ? translateEnglish("Go to home page", "მთავარ გვერდზე დაბრუნება") : "Go to home page"}
             className="brand-logo-wrap brand-logo-button"
             onClick={startOver}
             type="button"
@@ -1179,7 +1286,7 @@ export default function Home() {
             <div className="hero-copy">
               <div className="space-y-5">
                 <h1 className="hero-heading">
-                  {language === "en" ? <>Check Your Visa <span>Chances</span></> : <>შეაფასეთ ვიზის მიღების <span>შანსები</span></>}
+                  {language === "en" ? <>Check Your Visa <span>Chances</span></> : <>შეამოწმეთ ვიზის მიღების <span>შანსები</span></>}
                 </h1>
                 <p className="max-w-lg text-lg leading-8 text-[#6b6a62]">{t.subhead}</p>
               </div>
@@ -1190,15 +1297,13 @@ export default function Home() {
           <section className={destination ? "app-panel quiz-panel" : "app-panel destination-section"}>
             {!destination && (
               <div className="flow-space">
-                <p className="section-kicker">{t.destinationKicker}</p>
-                <h2>{t.destination}</h2>
                 <div className="destination-row">
                   {(Object.keys(configs) as DestinationCode[]).map((code) => (
                     <button className="destination-card" key={code} onClick={() => startDestination(code)}>
-                      <span className="flag" aria-hidden="true">{code === "USA" ? "🇺🇸" : "🇨🇦"}</span>
+                      <span className="flag" aria-hidden="true">{destinationUi[code].flag}</span>
                       <span>
-                        <strong>{code === "USA" ? t.usName : t.canadaName}</strong>
-                        <small>{code === "USA" ? t.usProfile : t.canadaProfile}</small>
+                        <strong>{destinationUi[code].name}</strong>
+                        <small>{destinationUi[code].profile}</small>
                       </span>
                       <span className="card-cta">
                         {t.start}
@@ -1212,7 +1317,7 @@ export default function Home() {
 
             {destination && !nationalityConfirmed && (
               <div className="flow-space">
-                <Progress current={1} total={4} />
+                <Progress current={1} language={language} total={4} />
                 <h2>{t.nationality}</h2>
                 <select
                   className="text-input nationality-select"
@@ -1233,9 +1338,9 @@ export default function Home() {
 
             {activeQuestion && !result && nationalityConfirmed && (
               <div className="flow-space">
-                <Progress current={Math.min(step + 2, questions.length + 1)} total={questions.length + 2} />
-                <p className="eyebrow">{destination === "USA" ? t.usName : t.canadaName} {t.assessment}</p>
-                <h2>{activeQuestion.text[language] || activeQuestion.text.en}</h2>
+                <Progress current={Math.min(step + 2, questions.length + 1)} language={language} total={questions.length + 2} />
+                <p className="eyebrow">{destination ? destinationUi[destination].name : ""} {t.assessment}</p>
+                <h2>{localizedText(activeQuestion.text, language)}</h2>
                 {activeQuestion.type === "single_choice" && (
                   <div className="choice-grid">
                     {activeQuestion.options?.map((option) => (
@@ -1244,7 +1349,7 @@ export default function Home() {
                         key={option.value}
                         onClick={() => chooseAnswer(activeQuestion.id, option.value)}
                       >
-                        <strong>{option.label[language] || option.label.en}</strong>
+                        <strong>{localizedText(option.label, language)}</strong>
                       </button>
                     ))}
                   </div>
@@ -1260,7 +1365,7 @@ export default function Home() {
                           key={option.value}
                           onClick={() => toggleMultiAnswer(activeQuestion.id, option.value)}
                         >
-                          <strong>{option.label[language] || option.label.en}</strong>
+                          <strong>{localizedText(option.label, language)}</strong>
                         </button>
                       );
                     })}
@@ -1285,7 +1390,7 @@ export default function Home() {
 
             {isContactStep && (
               <div className="flow-space">
-                <Progress current={questions.length + 2} total={questions.length + 2} />
+                <Progress current={questions.length + 2} language={language} total={questions.length + 2} />
                 <h2>{t.contactTitle}</h2>
                 <div className="lead-message">
                   <strong>{t.contactLead}</strong>
@@ -1309,9 +1414,9 @@ export default function Home() {
               <div className="flow-space result-view">
                 <p className="eyebrow">{result.publicId}</p>
                 <div className="tarot-result">
-                  <div className="tarot-grid" aria-label="Visa tarot cards">
+                  <div className="tarot-grid" aria-label={language === "en" ? "Visa tarot cards" : translateEnglish("Visa tarot cards")}>
                     {result.tarotCards.map((card) => (
-                      <article className="tarot-card" key={card.name} aria-label={card.name}>
+                      <article className="tarot-card" key={card.name} aria-label={language === "en" ? card.name : translateEnglish(card.name)}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img alt="" src={card.image} />
                       </article>
@@ -1319,7 +1424,7 @@ export default function Home() {
                   </div>
                 </div>
                 <h2>{t.resultTitle}</h2>
-                <div className="score-row">
+                <div className={`score-row score-${scoreTone(result.score)}`}>
                   <span>{result.score}%</span>
                   <strong>{categoryLabel(result.category, language)}</strong>
                 </div>
@@ -1333,7 +1438,12 @@ export default function Home() {
                   <ul>
                     {(result.strengths.length || result.risks.length
                       ? Array.from(new Set([...result.risks, ...result.strengths].map((item) => factorAction(item, language)))).slice(0, 5)
-                      : [language === "en" ? "Prepare evidence for your purpose of travel, finances, and return plans." : "მოამზადეთ მოგზაურობის მიზნის, ფინანსებისა და დაბრუნების გეგმის მტკიცებულება."]
+                      : [language === "en"
+                        ? "Prepare evidence for your purpose of travel, finances, and return plans."
+                        : translateEnglish(
+                          "Prepare evidence for your purpose of travel, finances, and return plans.",
+                          "მოამზადეთ მოგზაურობის მიზნის, ფინანსებისა და დაბრუნების გეგმის მტკიცებულება.",
+                        )]
                     ).map((item) => (
                       <li key={item}>{item}</li>
                     ))}
@@ -1367,6 +1477,7 @@ export default function Home() {
                 <p>{t.stepThreeText}</p>
               </div>
             </section>
+            <footer className="landing-footer">© eConsul 2026</footer>
           </>
         )}
       </section>
@@ -1374,9 +1485,13 @@ export default function Home() {
   );
 }
 
-function Progress({ current, total }: { current: number; total: number }) {
+function Progress({ current, language, total }: { current: number; language: Language; total: number }) {
+  const englishLabel = `Step ${current} of ${total}`;
+  const translatedLabel = translateEnglish("Step {current} of {total}", "ნაბიჯი {current} / {total}")
+    .replace("{current}", String(current))
+    .replace("{total}", String(total));
   return (
-    <div className="progress" aria-label={`Step ${current} of ${total}`}>
+    <div className="progress" aria-label={language === "en" ? englishLabel : translatedLabel}>
       <span style={{ width: `${Math.min(100, (current / total) * 100)}%` }} />
     </div>
   );
