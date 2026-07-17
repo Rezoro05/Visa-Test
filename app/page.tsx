@@ -62,7 +62,7 @@ type TarotCard = {
   image: string;
 };
 
-const draftKey = "test_visa_draft_v1";
+const draftKey = "test_visa_draft_v2";
 const whatsappNumber = "995555123456";
 
 function getInitialDraft() {
@@ -99,7 +99,7 @@ const copy = {
     start: "Start Test",
     headline: "Check Your Visa Chances",
     subhead:
-      "Answer a few plain questions and get a friendly visitor-visa readiness estimate in minutes.",
+      "Answer a few plain questions and get an evidence-based visitor-visa approval estimate in minutes.",
     destination: "Where do you want to travel?",
     nationality: "What is your nationality?",
     nationalityPlaceholder: "Select your nationality",
@@ -108,7 +108,7 @@ const copy = {
     contactTitle: "Almost done. Where should eConsul reach you?",
     contactLead: "Where do you want us to send your results?",
     contactHint: "Add the best contact details, and we will use them to share your assessment result and help if you ask for expert support.",
-    resultTitle: "Your visa readiness estimate",
+    resultTitle: "Estimated approval likelihood",
     consent:
       "I agree that eConsul may contact me by phone, email, or messaging apps about my visa assessment and related services.",
     showResult: "Show My Result",
@@ -118,14 +118,15 @@ const copy = {
     expert: "Continue with an eConsul Visa Expert",
     startOver: "Start Over",
     disclaimer:
-      "This is an estimated assessment based on the information you provided and Test Visa scoring rules. It is not a government decision, legal advice, or a guarantee of visa approval.",
+      "This estimate compares your answers with published visitor-visa decision factors. Officers assess every case individually and may rely on information or documents this test cannot verify. It is not a government decision, legal advice, or a guarantee of approval.",
+    estimateNote: "Indicative estimate based on self-reported answers",
     manual:
       "Your answers include a complex risk factor. A normal percentage may not tell the full story, so expert review is recommended before applying.",
     fullName: "Full name",
     email: "Email",
     phone: "Phone with country code",
     emptyStrengths: "No strong positive factors captured yet.",
-    emptyRisks: "No major risk factors captured in this beta.",
+    emptyRisks: "No material risk factors identified from these answers.",
     destinationKicker: "Pick your destination to begin",
     assessment: "assessment",
     usProfile: "B1/B2 visitor profile",
@@ -134,8 +135,8 @@ const copy = {
     canadaName: "Canada",
     stepOneTitle: "Answer simple questions",
     stepOneText: "Plain questions, no jargon.",
-    stepTwoTitle: "Get your readiness score",
-    stepTwoText: "A clear estimate in minutes.",
+    stepTwoTitle: "Get your approval estimate",
+    stepTwoText: "Based on published decision factors.",
     stepThreeTitle: "See what to improve",
     stepThreeText: "Strengths, risks, and next steps.",
   },
@@ -143,7 +144,7 @@ const copy = {
     start: "დაწყება",
     headline: "შეამოწმეთ სავიზო მზაობა",
     subhead:
-      "უპასუხეთ რამდენიმე მარტივ კითხვას და სულ რამდენიმე წუთში მიიღეთ ვიზიტორის ვიზისთვის თქვენი მზაობის წინასწარი შეფასება.",
+      "უპასუხეთ რამდენიმე მარტივ კითხვას და სულ რამდენიმე წუთში მიიღეთ ოფიციალურ კრიტერიუმებზე დაფუძნებული ვიზის მიღების სავარაუდო შეფასება.",
     destination: "სად გსურთ გამგზავრება?",
     nationality: "რომელი ქვეყნის მოქალაქე ხართ?",
     nationalityPlaceholder: "აირჩიეთ მოქალაქეობა",
@@ -152,7 +153,7 @@ const copy = {
     contactTitle: "თითქმის დასრულებულია",
     contactLead: "სად გსურთ გამოგიგზავნოთ შედეგი?",
     contactHint: "მიუთითეთ თქვენთვის მოსახერხებელი საკონტაქტო ინფორმაცია. მას შედეგის გამოსაგზავნად და, თქვენი სურვილის შემთხვევაში, ექსპერტთან დასაკავშირებლად გამოვიყენებთ.",
-    resultTitle: "თქვენი სავიზო მზაობის შეფასება",
+    resultTitle: "ვიზის მიღების სავარაუდო ალბათობა",
     consent:
       "ვეთანხმები, რომ eConsul დამიკავშირდეს ტელეფონით, ელფოსტით ან შეტყობინებების აპებით ჩემი სავიზო შეფასებისა და შესაბამისი მომსახურებების შესახებ.",
     showResult: "შედეგის ნახვა",
@@ -162,7 +163,8 @@ const copy = {
     expert: "eConsul-ის ვიზის ექსპერტთან გაგრძელება",
     startOver: "თავიდან დაწყება",
     disclaimer:
-      "ეს არის წინასწარი შეფასება, რომელიც თქვენს პასუხებსა და Test Visa-ს შეფასების წესებს ეფუძნება. იგი არ წარმოადგენს სახელმწიფო ორგანოს გადაწყვეტილებას, იურიდიულ კონსულტაციას ან ვიზის გაცემის გარანტიას.",
+      "ეს შეფასება თქვენს პასუხებს ვიზიტორის ვიზის შესახებ ოფიციალურად გამოქვეყნებულ გადაწყვეტილების ფაქტორებს ადარებს. თითოეულ განაცხადს ოფიცერი ინდივიდუალურად განიხილავს და შესაძლოა დაეყრდნოს ინფორმაციას ან დოკუმენტებს, რომელთა გადამოწმებაც ამ ტესტს არ შეუძლია. შედეგი არ წარმოადგენს სახელმწიფო ორგანოს გადაწყვეტილებას, იურიდიულ კონსულტაციას ან ვიზის გაცემის გარანტიას.",
+    estimateNote: "საორიენტაციო შეფასება თქვენ მიერ მითითებულ ინფორმაციაზე დაყრდნობით",
     manual:
       "თქვენს პასუხებში ჩანს კომპლექსური რისკ-ფაქტორი. მხოლოდ პროცენტული შეფასება სრულ სურათს ვერ აჩვენებს, ამიტომ განაცხადამდე რეკომენდებულია ექსპერტის კონსულტაცია.",
     fullName: "სახელი და გვარი",
@@ -178,8 +180,8 @@ const copy = {
     canadaName: "კანადა",
     stepOneTitle: "უპასუხეთ მარტივ კითხვებს",
     stepOneText: "მარტივი და გასაგები კითხვები.",
-    stepTwoTitle: "მიიღეთ მზაობის შეფასება",
-    stepTwoText: "წინასწარი შეფასება რამდენიმე წუთში.",
+    stepTwoTitle: "მიიღეთ ვიზის ალბათობის შეფასება",
+    stepTwoText: "ოფიციალურად გამოქვეყნებულ ფაქტორებზე დაყრდნობით.",
     stepThreeTitle: "ნახეთ, რა არის გასაუმჯობესებელი",
     stepThreeText: "ძლიერი მხარეები, რისკები და შემდეგი ნაბიჯები.",
   },
@@ -187,10 +189,46 @@ const copy = {
 
 const sharedQuestions: Question[] = [
   {
-    id: "married",
+    id: "trip_purpose",
     type: "single_choice",
-    text: { en: "Are you married?", ka: "ხართ დაქორწინებული?" },
+    text: { en: "What is the main purpose of your trip?", ka: "რა არის თქვენი მოგზაურობის მთავარი მიზანი?" },
+    options: [
+      label("tourism", "Tourism / holiday", "ტურიზმი / დასვენება"),
+      label("family_visit", "Visit family or friends", "ოჯახის წევრების ან მეგობრების მონახულება"),
+      label("business", "Business meeting or event", "საქმიანი შეხვედრა ან ღონისძიება"),
+      label("medical", "Medical visit", "სამედიცინო ვიზიტი"),
+      label("other", "Other", "სხვა"),
+    ],
+  },
+  {
+    id: "trip_duration",
+    type: "single_choice",
+    text: { en: "How long do you plan to stay?", ka: "რამდენ ხანს გეგმავთ დარჩენას?" },
+    options: [
+      label("under_2_weeks", "Up to 2 weeks", "2 კვირამდე"),
+      label("two_to_four_weeks", "2-4 weeks", "2-4 კვირა"),
+      label("one_to_three_months", "1-3 months", "1-3 თვე"),
+      label("over_three_months", "More than 3 months", "3 თვეზე მეტი"),
+    ],
+  },
+  {
+    id: "specific_trip_plan",
+    type: "single_choice",
+    text: {
+      en: "Do you have a specific itinerary, dates, accommodation, and reason for this trip?",
+      ka: "გაქვთ მოგზაურობის კონკრეტული გეგმა, თარიღები, საცხოვრებელი და ვიზიტის მკაფიო მიზეზი?",
+    },
     options: yesNo(),
+  },
+  {
+    id: "trip_funding_source",
+    type: "single_choice",
+    text: { en: "Who will pay for most of the trip?", ka: "ვინ დაფარავს მოგზაურობის ხარჯების ძირითად ნაწილს?" },
+    options: [
+      label("self", "I will pay", "მე გადავიხდი"),
+      label("mixed", "I will pay with some support", "ნაწილს მე გადავიხდი, ნაწილში დამეხმარებიან"),
+      label("sponsor", "Another person or organization", "სხვა პირი ან ორგანიზაცია"),
+    ],
   },
   {
     id: "international_travel",
@@ -236,6 +274,16 @@ const sharedQuestions: Question[] = [
     ],
   },
   {
+    id: "previous_travel_compliance",
+    type: "single_choice",
+    showIf: { questionId: "international_travel", equals: "yes" },
+    text: {
+      en: "On previous trips, did you always leave on time and follow the visa or entry conditions?",
+      ka: "წინა მოგზაურობებისას ყოველთვის დროულად დატოვეთ ქვეყანა და დაიცავით ვიზის ან შესვლის პირობები?",
+    },
+    options: yesNo(),
+  },
+  {
     id: "previous_destination_visa_result",
     type: "single_choice",
     text: {
@@ -254,6 +302,16 @@ const sharedQuestions: Question[] = [
     text: {
       en: "Have you ever had this destination's visa canceled or revoked?",
       ka: "ოდესმე გაუუქმებიათ თქვენთვის ამ ქვეყნის ვიზა?",
+    },
+    options: yesNo(),
+  },
+  {
+    id: "circumstances_changed_since_refusal",
+    type: "single_choice",
+    showIf: { questionId: "previous_destination_visa_result", equals: "refused" },
+    text: {
+      en: "Since the refusal, have your circumstances or supporting evidence materially improved?",
+      ka: "უარის შემდეგ მნიშვნელოვნად გაუმჯობესდა თქვენი გარემოებები ან დამადასტურებელი დოკუმენტები?",
     },
     options: yesNo(),
   },
@@ -288,6 +346,20 @@ const sharedQuestions: Question[] = [
     ],
   },
   {
+    id: "current_status_duration",
+    type: "single_choice",
+    text: {
+      en: "How long have you been in your current work, business, study, or retirement situation?",
+      ka: "რამდენი ხანია, რაც ამჟამინდელ სამსახურში, ბიზნესში, სასწავლებელში ან საპენსიო სტატუსში ხართ?",
+    },
+    options: [
+      label("under_6_months", "Less than 6 months", "6 თვეზე ნაკლები"),
+      label("six_to_twenty_four_months", "6 months-2 years", "6 თვიდან 2 წლამდე"),
+      label("over_two_years", "More than 2 years", "2 წელზე მეტი"),
+      label("not_applicable", "Not applicable", "არ ვრცელდება"),
+    ],
+  },
+  {
     id: "regular_monthly_income",
     type: "single_choice",
     text: { en: "Do you have regular monthly income?", ka: "გაქვთ რეგულარული თვიური შემოსავალი?" },
@@ -318,17 +390,6 @@ const sharedQuestions: Question[] = [
     ],
   },
   {
-    id: "education_level",
-    type: "single_choice",
-    text: { en: "What is your highest completed education?", ka: "რა არის თქვენ მიერ დასრულებული განათლების უმაღლესი საფეხური?" },
-    options: [
-      label("high_school", "High school", "საშუალო სკოლა"),
-      label("college", "College / bachelor's", "კოლეჯი / ბაკალავრი"),
-      label("advanced", "Advanced degree", "მაგისტრი ან უფრო მაღალი"),
-      label("none", "No completed formal education", "ფორმალური განათლება არ დამისრულებია"),
-    ],
-  },
-  {
     id: "home_country_commitments",
     type: "single_choice",
     text: {
@@ -354,10 +415,22 @@ const configs: Record<DestinationCode, DestinationConfig> = {
     label: "United States",
     scoringMethod: "baseline_adjustment",
     baselineScore: 50,
-    travelPointsPerGroup: 3,
-    travelCap: 9,
+    travelPointsPerGroup: 2,
+    travelCap: 6,
     questions: [
       ...sharedQuestions,
+      {
+        id: "application_location",
+        type: "single_choice",
+        text: {
+          en: "Where will you apply for the U.S. visa?",
+          ka: "სად შეიტანთ განაცხადს აშშ-ის ვიზაზე?",
+        },
+        options: [
+          label("nationality_or_residence", "In my country of nationality or residence", "ჩემი მოქალაქეობის ან საცხოვრებელ ქვეყანაში"),
+          label("third_country", "In another country", "სხვა ქვეყანაში"),
+        ],
+      },
       {
         id: "immigrant_petition_filed",
         type: "single_choice",
@@ -369,45 +442,56 @@ const configs: Record<DestinationCode, DestinationConfig> = {
       },
     ],
     rules: [
-      rule("married", "yes", 3, "married", "positive", "Marriage can support home-country ties.", "Prepare marriage and family-tie evidence."),
-      rule("international_travel", "yes", 7, "travel", "positive", "Prior international travel supports a credible travel profile.", "Collect passport stamps and prior travel records."),
-      rule("international_travel", "no", -4, "travel", "negative", "No prior international travel is a modest weakness.", "Strengthen your financial evidence and reasons to return home."),
-      rule("previous_destination_visa_result", "issued", 7, "prior_visa", "positive", "A previous issued visa is a strong positive factor.", "Prepare copies of prior visas."),
-      rule("previous_destination_visa_result", "refused", -7, "prior_refusal", "negative", "A previous refusal reduces this assessment.", "Prepare a clear explanation of what changed."),
-      rule("destination_visa_revoked", "yes", -10, "revoked", "negative", "A revoked visa is a serious risk factor.", "Seek expert review before applying.", true),
+      rule("trip_purpose", "tourism", 2, "purpose", "positive", "Tourism is a legitimate visitor purpose when the plan is specific and temporary.", "Prepare a concise itinerary and evidence supporting the trip."),
+      rule("trip_purpose", "business", 2, "purpose", "positive", "A documented business meeting or event can support a legitimate temporary purpose.", "Prepare the event, employer, and itinerary evidence."),
+      rule("trip_purpose", "medical", -2, "purpose", "negative", "Medical travel requires a detailed treatment and funding plan.", "Prepare provider confirmation, projected costs, and proof of payment resources."),
+      rule("trip_purpose", "other", -4, "purpose", "negative", "An unclear or unusual purpose needs stronger explanation.", "Prepare a precise, documented explanation of the trip."),
+      rule("trip_duration", "under_2_weeks", 4, "duration", "positive", "A short stay is easier to align with a limited visitor purpose.", "Match your itinerary and budget to the stated dates."),
+      rule("trip_duration", "two_to_four_weeks", 2, "duration", "positive", "A clearly planned stay of up to four weeks can support temporary intent.", "Match your itinerary and budget to the stated dates."),
+      rule("trip_duration", "one_to_three_months", -4, "duration", "negative", "A longer stay requires stronger purpose, funding, and return evidence.", "Explain why this duration is necessary and document the full budget."),
+      rule("trip_duration", "over_three_months", -9, "duration", "negative", "A stay over three months can be difficult to reconcile with ordinary visitor plans.", "Reassess the duration or prepare unusually strong purpose and return evidence."),
+      rule("specific_trip_plan", "yes", 7, "trip_plan", "positive", "Specific dates, accommodation, and activities support a credible temporary trip.", "Keep the itinerary consistent with your application and interview answers."),
+      rule("specific_trip_plan", "no", -10, "trip_plan", "negative", "A vague trip plan weakens the stated visitor purpose.", "Create a realistic itinerary with dates, accommodation, and expected costs."),
+      rule("trip_funding_source", "self", 2, "funding_source", "positive", "Self-funding can support financial independence when the money is documented.", "Prepare statements showing the funds are genuinely available to you."),
+      rule("international_travel", "yes", 4, "travel", "positive", "Prior compliant international travel supports a credible travel profile.", "Collect passport stamps and prior travel records."),
+      rule("international_travel", "no", -3, "travel", "negative", "No prior international travel leaves less evidence of travel compliance.", "Strengthen your trip purpose, finances, and reasons to return home."),
+      rule("previous_travel_compliance", "yes", 5, "travel_compliance", "positive", "Following previous visa and entry conditions supports credibility.", "Prepare prior visas and entry or exit records."),
+      rule("previous_travel_compliance", "no", -20, "travel_compliance", "negative", "A previous breach of immigration conditions is a critical risk.", "Get expert review and prepare the complete history before applying.", true),
+      rule("previous_destination_visa_result", "issued", 8, "prior_visa", "positive", "A previous issued U.S. visa with compliant use is a strong factor.", "Prepare the prior visa and travel records."),
+      rule("previous_destination_visa_result", "refused", -8, "prior_refusal", "negative", "A previous refusal remains relevant unless circumstances have materially changed.", "Prepare a clear explanation of what has changed since the refusal."),
+      rule("circumstances_changed_since_refusal", "yes", 3, "refusal_change", "positive", "Materially improved circumstances can help address a prior refusal.", "Document each important change since the refusal."),
+      rule("circumstances_changed_since_refusal", "no", -8, "refusal_change", "negative", "Reapplying without a meaningful change may lead to the same concerns.", "Delay reapplication until you can show a material change."),
+      rule("destination_visa_revoked", "yes", -15, "revoked", "negative", "A revoked visa is a serious risk factor.", "Seek expert review before applying.", true),
       rule("immigration_violation", "yes", -20, "immigration_violation", "negative", "A previous overstay, deportation, or removal is a critical risk factor.", "Get expert review and prepare the complete immigration history before applying.", true),
-      rule("arrested", "yes", -10, "arrest", "negative", "Arrest history can create complex visa questions.", "Prepare full disclosure documents and get expert review.", true),
-      rule("occupation_status", "unemployed", -6, "occupation", "negative", "No current occupation weakens stability evidence.", "Strengthen financial and home-country ties."),
+      rule("arrested", "yes", -12, "arrest", "negative", "Criminal history can create inadmissibility or disclosure questions.", "Prepare complete court records and get expert review.", true),
+      rule("occupation_status", "unemployed", -7, "occupation", "negative", "No current occupation weakens an important home-country tie.", "Strengthen other financial and home-country ties."),
+      rule("current_status_duration", "under_6_months", -3, "status_duration", "negative", "A recently started job, business, or study program is a weaker established tie.", "Prepare contracts, enrollment records, and approved leave evidence."),
+      rule("current_status_duration", "six_to_twenty_four_months", 2, "status_duration", "positive", "An established current activity supports stability.", "Prepare employment, business, study, or retirement evidence."),
+      rule("current_status_duration", "over_two_years", 5, "status_duration", "positive", "Long-term work, business, study, or retirement status is a strong stability signal.", "Prepare evidence showing continuity and approved leave."),
       rule("regular_monthly_income", "yes", 4, "income", "positive", "Regular income supports financial stability.", "Prepare payslips and bank statements."),
-      rule("regular_monthly_income", "no", -6, "income", "negative", "No regular income can weaken the profile.", "Prepare sponsor or savings evidence."),
-      rule("trip_funds_documented", "yes", 5, "funds", "positive", "Documented trip funds support a credible travel plan.", "Prepare bank statements and a realistic trip budget."),
-      rule("trip_funds_documented", "no", -10, "funds", "negative", "Insufficient documented trip funds are a significant weakness.", "Build a clear funding plan before applying."),
+      rule("regular_monthly_income", "no", -5, "income", "negative", "No regular income can weaken financial stability.", "Prepare genuine savings or clearly documented sponsor evidence."),
+      rule("trip_funds_documented", "yes", 8, "funds", "positive", "Documented funds matched to the itinerary support the ability to pay for the trip.", "Prepare bank statements and a realistic trip budget."),
+      rule("trip_funds_documented", "no", -15, "funds", "negative", "Insufficient documented funds are a major weakness.", "Build and document a credible funding plan before applying."),
       rule("monthly_salary_range", "under_500", -3, "salary", "negative", "A lower income range may require stronger savings or sponsor evidence.", "Prepare bank statements, savings proof, or sponsor documents."),
       rule("monthly_salary_range", "500_1000", 1, "salary", "positive", "A stable income range adds support to your financial profile.", "Prepare recent payslips and employment confirmation."),
-      rule("monthly_salary_range", "1000_2000", 3, "salary", "positive", "A stronger income range supports financial stability.", "Prepare payslips, tax records, and bank statements."),
-      rule("monthly_salary_range", "over_2000", 5, "salary", "positive", "A high income range is a strong financial stability signal.", "Prepare income confirmation and bank statements."),
-      rule("education_level", "none", -6, "education", "negative", "No education selected weakens the profile.", "Prepare other evidence of stability."),
-      rule("home_country_commitments", "yes", 7, "home_ties", "positive", "Ongoing commitments support a credible reason to return home.", "Prepare documents showing your work, study, dependents, or property."),
-      rule("home_country_commitments", "no", -7, "home_ties", "negative", "Limited return commitments can weaken non-immigrant intent.", "Strengthen and document your reasons to return home."),
-      rule("immediate_relatives_destination", "no", 3, "relatives", "positive", "No immediate relatives in the destination can reduce overstay concerns.", "Document your reason for returning home."),
-      rule("immigrant_petition_filed", "yes", -6, "petition", "negative", "An immigrant petition can raise non-immigrant intent questions.", "Get expert review of your application strategy."),
+      rule("monthly_salary_range", "1000_2000", 2, "salary", "positive", "A stronger income range supports financial stability.", "Prepare payslips, tax records, and bank statements."),
+      rule("monthly_salary_range", "over_2000", 3, "salary", "positive", "A higher income range supports financial stability when consistent with records.", "Prepare income confirmation and bank statements."),
+      rule("home_country_commitments", "yes", 10, "home_ties", "positive", "Documented work, home, financial, or family commitments strongly support intent to return.", "Prepare documents proving the commitments that require your return."),
+      rule("home_country_commitments", "no", -12, "home_ties", "negative", "Limited documented ties make temporary intent harder to establish.", "Strengthen and document concrete reasons to return home."),
+      rule("application_location", "nationality_or_residence", 2, "application_location", "positive", "Applying in the country of nationality or residence generally makes local ties easier to assess.", "Prepare evidence of residence where you apply."),
+      rule("application_location", "third_country", -5, "application_location", "negative", "Applying outside the country of nationality or residence can make qualifications harder to demonstrate.", "Explain why you are applying there and document lawful residence if applicable."),
+      rule("immigrant_petition_filed", "yes", -8, "petition", "negative", "An immigrant petition can intensify questions about temporary intent.", "Get expert review of your application strategy."),
     ],
   },
   CANADA: {
     code: "CANADA",
     label: "Canada",
-    scoringMethod: "point_mapping",
-    travelPointsPerGroup: 1,
-    travelCap: 3,
+    scoringMethod: "baseline_adjustment",
+    baselineScore: 50,
+    travelPointsPerGroup: 2,
+    travelCap: 6,
     questions: [
-      ...sharedQuestions.slice(0, 3),
-      {
-        id: "visited_related_country",
-        type: "single_choice",
-        text: { en: "Have you ever been to the United States?", ka: "ყოფილხართ ამერიკის შეერთებულ შტატებში?" },
-        options: yesNo(),
-      },
-      ...sharedQuestions.slice(3),
+      ...sharedQuestions,
       {
         id: "bank_statement_available",
         type: "single_choice",
@@ -428,32 +512,45 @@ const configs: Record<DestinationCode, DestinationConfig> = {
       },
     ],
     rules: [
-      rule("married", "yes", 1, "married", "positive", "Marriage can support home-country ties.", "Prepare marriage and family-tie evidence."),
-      rule("international_travel", "yes", 1, "travel", "positive", "Prior international travel supports a credible profile.", "Gather travel records."),
-      rule("international_travel", "no", -1, "travel", "negative", "No prior international travel is a modest risk.", "Strengthen other evidence."),
-      rule("visited_related_country", "yes", 2, "visited_us", "positive", "Prior U.S. travel is positive for Canada assessments.", "Include U.S. travel history."),
-      rule("visited_related_country", "no", -1, "visited_us", "negative", "No U.S. travel removes a useful support factor.", "Strengthen financial evidence."),
-      rule("previous_destination_visa_result", "issued", 1, "prior_visa", "positive", "A previous issued visa helps your profile.", "Prepare prior visa copies."),
-      rule("previous_destination_visa_result", "refused", -1, "prior_refusal", "negative", "A previous refusal is a risk factor.", "Explain what changed since refusal."),
-      rule("destination_visa_revoked", "yes", -4, "revoked", "negative", "A revoked visa is a serious risk factor.", "Seek expert review before applying.", true),
-      rule("immigration_violation", "yes", -5, "immigration_violation", "negative", "A previous overstay, deportation, or removal is a critical risk factor.", "Get expert review and prepare the complete immigration history before applying.", true),
-      rule("arrested", "yes", -4, "arrest", "negative", "Arrest history can create complex visa questions.", "Prepare full disclosure documents.", true),
-      rule("occupation_status", "unemployed", -1, "occupation", "negative", "No current occupation weakens stability evidence.", "Strengthen home-country ties."),
-      rule("regular_monthly_income", "yes", 1, "income", "positive", "Regular income supports financial stability.", "Prepare payslips and statements."),
-      rule("regular_monthly_income", "no", -1, "income", "negative", "No regular income can weaken the profile.", "Prepare sponsor or savings evidence."),
-      rule("trip_funds_documented", "yes", 2, "funds", "positive", "Documented trip funds support a credible travel plan.", "Prepare bank statements and a realistic trip budget."),
-      rule("trip_funds_documented", "no", -3, "funds", "negative", "Insufficient documented trip funds weaken the application.", "Build a clear funding plan before applying."),
-      rule("monthly_salary_range", "under_500", -1, "salary", "negative", "A lower salary range may require stronger financial evidence.", "Prepare bank statements, savings proof, or sponsor documents."),
-      rule("monthly_salary_range", "500_1000", 0, "salary", "positive", "A stable salary range gives some support to your profile.", "Prepare recent payslips and employment confirmation."),
-      rule("monthly_salary_range", "1000_2000", 1, "salary", "positive", "A stronger salary range supports financial stability.", "Prepare payslips and bank statements."),
-      rule("monthly_salary_range", "over_2000", 2, "salary", "positive", "A high salary range is a strong financial stability signal.", "Prepare salary confirmation and bank statements."),
-      rule("education_level", "none", -1, "education", "negative", "No education selected weakens the profile.", "Prepare other stability evidence."),
-      rule("home_country_commitments", "yes", 2, "home_ties", "positive", "Ongoing commitments support a credible reason to return home.", "Prepare documents showing your work, study, dependents, or property."),
-      rule("home_country_commitments", "no", -2, "home_ties", "negative", "Limited return commitments can weaken temporary-resident intent.", "Strengthen and document your reasons to return home."),
-      rule("bank_statement_available", "yes", 2, "bank", "positive", "Bank statements are important financial evidence.", "Prepare recent bank statements."),
-      rule("bank_statement_available", "no", -2, "bank", "negative", "Missing bank statements can significantly weaken the file.", "Collect statements before applying."),
-      rule("immediate_relatives_destination", "no", 1, "relatives", "positive", "No immediate relatives in Canada can reduce overstay concerns.", "Document your return plans."),
-      rule("immigration_process_started", "yes", -1, "immigration", "negative", "An immigration process can complicate visitor intent.", "Get expert review before applying."),
+      rule("trip_purpose", "tourism", 2, "purpose", "positive", "Tourism is a legitimate visitor purpose when the plan is specific and temporary.", "Prepare a concise itinerary and evidence supporting the trip."),
+      rule("trip_purpose", "business", 2, "purpose", "positive", "A documented business meeting or event can support a legitimate temporary purpose.", "Prepare event, employer, and itinerary evidence."),
+      rule("trip_purpose", "medical", -2, "purpose", "negative", "Medical travel requires a detailed treatment and funding plan.", "Prepare provider confirmation, projected costs, and funding evidence."),
+      rule("trip_purpose", "other", -4, "purpose", "negative", "An unclear or unusual purpose needs stronger explanation.", "Prepare a precise, documented explanation of the trip."),
+      rule("trip_duration", "under_2_weeks", 4, "duration", "positive", "A short stay is easier to align with a limited visitor purpose.", "Match your itinerary and budget to the stated dates."),
+      rule("trip_duration", "two_to_four_weeks", 2, "duration", "positive", "A clearly planned stay of up to four weeks supports temporary intent.", "Match your itinerary and budget to the stated dates."),
+      rule("trip_duration", "one_to_three_months", -4, "duration", "negative", "A longer stay requires stronger purpose, funding, and return evidence.", "Explain why this duration is necessary and document the full budget."),
+      rule("trip_duration", "over_three_months", -8, "duration", "negative", "A long visit can require unusually strong evidence of purpose and departure.", "Reassess the duration or prepare strong purpose and return evidence."),
+      rule("specific_trip_plan", "yes", 6, "trip_plan", "positive", "Specific dates, accommodation, and activities support a credible visit.", "Keep the itinerary consistent throughout the application."),
+      rule("specific_trip_plan", "no", -10, "trip_plan", "negative", "A vague trip plan weakens the purpose of visit.", "Create a realistic itinerary with dates, accommodation, and costs."),
+      rule("trip_funding_source", "self", 2, "funding_source", "positive", "Self-funding can support financial independence when documented.", "Prepare statements showing the funds are available to you."),
+      rule("international_travel", "yes", 4, "travel", "positive", "Prior compliant international travel supports credibility.", "Gather visas, stamps, and travel records."),
+      rule("international_travel", "no", -3, "travel", "negative", "No prior international travel leaves less evidence of compliance.", "Strengthen purpose, finances, and reasons to return."),
+      rule("previous_travel_compliance", "yes", 5, "travel_compliance", "positive", "Following previous entry conditions supports credibility.", "Prepare prior visas and entry or exit records."),
+      rule("previous_travel_compliance", "no", -18, "travel_compliance", "negative", "A previous breach of immigration conditions is a critical risk.", "Get expert review and prepare the complete history.", true),
+      rule("previous_destination_visa_result", "issued", 6, "prior_visa", "positive", "A previous issued Canadian visa with compliant use supports the profile.", "Prepare prior visa and travel records."),
+      rule("previous_destination_visa_result", "refused", -7, "prior_refusal", "negative", "A previous refusal remains relevant unless concerns have been addressed.", "Explain and document what changed since refusal."),
+      rule("circumstances_changed_since_refusal", "yes", 3, "refusal_change", "positive", "Materially improved circumstances can help address a prior refusal.", "Document each important change since refusal."),
+      rule("circumstances_changed_since_refusal", "no", -8, "refusal_change", "negative", "Reapplying without meaningful change may repeat the same concerns.", "Delay reapplication until the refusal grounds are addressed."),
+      rule("destination_visa_revoked", "yes", -15, "revoked", "negative", "A revoked visa is a serious risk factor.", "Seek expert review before applying.", true),
+      rule("immigration_violation", "yes", -20, "immigration_violation", "negative", "A previous overstay, deportation, or removal is a critical risk factor.", "Get expert review and prepare the complete immigration history.", true),
+      rule("arrested", "yes", -12, "arrest", "negative", "Criminal history may create inadmissibility or disclosure issues.", "Prepare complete records and get expert review.", true),
+      rule("occupation_status", "unemployed", -7, "occupation", "negative", "No current occupation weakens an important home-country tie.", "Strengthen other financial and home-country ties."),
+      rule("current_status_duration", "under_6_months", -3, "status_duration", "negative", "A recently started activity is a weaker established tie.", "Prepare contracts, enrollment records, and leave evidence."),
+      rule("current_status_duration", "six_to_twenty_four_months", 2, "status_duration", "positive", "An established current activity supports stability.", "Prepare work, business, study, or retirement evidence."),
+      rule("current_status_duration", "over_two_years", 5, "status_duration", "positive", "Long-term work, business, study, or retirement status supports stability.", "Prepare evidence showing continuity."),
+      rule("regular_monthly_income", "yes", 4, "income", "positive", "Regular income supports financial stability.", "Prepare payslips and statements."),
+      rule("regular_monthly_income", "no", -5, "income", "negative", "No regular income weakens financial stability.", "Prepare genuine savings or documented sponsor evidence."),
+      rule("trip_funds_documented", "yes", 8, "funds", "positive", "Documented funds matched to the visit support the ability to pay.", "Prepare bank statements and a realistic trip budget."),
+      rule("trip_funds_documented", "no", -15, "funds", "negative", "Insufficient documented funds are a major weakness.", "Build and document a credible funding plan."),
+      rule("monthly_salary_range", "under_500", -3, "salary", "negative", "A lower income range may require stronger savings or sponsor evidence.", "Prepare statements, savings, or sponsor documents."),
+      rule("monthly_salary_range", "500_1000", 1, "salary", "positive", "A stable income gives some financial support.", "Prepare payslips and employment confirmation."),
+      rule("monthly_salary_range", "1000_2000", 2, "salary", "positive", "A stronger income range supports financial stability.", "Prepare payslips and bank statements."),
+      rule("monthly_salary_range", "over_2000", 3, "salary", "positive", "A higher consistent income supports financial stability.", "Prepare income confirmation and statements."),
+      rule("home_country_commitments", "yes", 10, "home_ties", "positive", "Documented job, home, financial, or family commitments strongly support departure at the end of the visit.", "Prepare documents proving the commitments requiring your return."),
+      rule("home_country_commitments", "no", -12, "home_ties", "negative", "Limited documented ties make departure at the end of the visit harder to establish.", "Strengthen and document concrete reasons to return home."),
+      rule("bank_statement_available", "yes", 6, "bank", "positive", "Several months of bank history support the financial assessment.", "Prepare complete recent bank statements."),
+      rule("bank_statement_available", "no", -8, "bank", "negative", "Missing bank history significantly weakens financial evidence.", "Collect complete statements before applying."),
+      rule("immigration_process_started", "yes", -3, "immigration", "negative", "A separate immigration process requires a clear temporary-visit explanation.", "Explain how you will still leave Canada at the end of this visit."),
     ],
   },
 };
@@ -508,9 +605,9 @@ function visibleQuestions(config: DestinationConfig, answers: Record<string, Ans
 }
 
 function category(score: number): ScoreResult["category"] {
-  if (score >= 80) return "High";
-  if (score >= 50) return "Moderate";
-  if (score >= 20) return "Low";
+  if (score >= 75) return "High";
+  if (score >= 55) return "Moderate";
+  if (score >= 35) return "Low";
   return "Very Low";
 }
 
@@ -566,13 +663,9 @@ function makeTarotCards(): TarotCard[] {
 
 function scoreAssessment(config: DestinationConfig, answers: Record<string, AnswerValue>): ScoreResult {
   const matched = config.rules.filter((ruleItem) => String(answers[ruleItem.questionId]) === ruleItem.answerValue);
-  const education = answers.education_level;
-  if (education && education !== "none") {
-    matched.push(rule("education_level", String(education), config.code === "USA" ? 3 : 1, "education", "positive", "Recognized education supports your profile.", "Prepare diplomas or certificates."));
-  }
   const occupation = answers.occupation_status;
   if (occupation && occupation !== "unemployed") {
-    matched.push(rule("occupation_status", String(occupation), config.code === "USA" ? 5 : 1, "occupation", "positive", "Occupation or study supports stability evidence.", "Prepare employment, business, study, or retirement documents."));
+    matched.push(rule("occupation_status", String(occupation), config.code === "USA" ? 4 : 3, "occupation", "positive", "Work, business, study, or retirement status supports home-country stability.", "Prepare employment, business, study, or retirement documents."));
   }
   if (answers.international_travel === "yes") {
     const count = Number(answers.countries_visited_count || 0);
@@ -597,13 +690,14 @@ function scoreAssessment(config: DestinationConfig, answers: Record<string, Answ
   const adjustment = matched.reduce((sum, factor) => sum + factor.adjustment, 0);
   let score =
     config.scoringMethod === "baseline_adjustment"
-      ? clamp((config.baselineScore ?? 50) + adjustment, 5, 95)
-      : clamp(mapPointsToScore(adjustment), 5, 95);
+      ? clamp((config.baselineScore ?? 50) + adjustment, 5, 90)
+      : clamp(mapPointsToScore(adjustment), 5, 90);
 
   // These answers require case-specific review; a high automated score would be misleading.
   if (answers.destination_visa_revoked === "yes") score = Math.min(score, 35);
   if (answers.arrested === "yes") score = Math.min(score, 45);
   if (answers.immigration_violation === "yes") score = Math.min(score, 25);
+  if (answers.previous_travel_compliance === "no") score = Math.min(score, 30);
 
   const resultCategory = category(score);
   return {
@@ -611,14 +705,14 @@ function scoreAssessment(config: DestinationConfig, answers: Record<string, Answ
     category: resultCategory,
     explanation:
       resultCategory === "High"
-        ? "Your answers indicate a comparatively strong visitor-visa profile under the beta rules."
+        ? "Your answers align well with the main factors officers use to assess a temporary visitor application."
         : resultCategory === "Moderate"
-          ? "Your profile includes useful strengths, but a few areas need careful evidence."
+          ? "Your profile has credible strengths, but one or more decision factors need stronger evidence."
           : resultCategory === "Low"
-            ? "Your profile currently has meaningful weaknesses that should be reviewed before applying."
-            : "Your answers show critical weaknesses or complex circumstances.",
-    strengths: matched.filter((factor) => factor.direction === "positive"),
-    risks: matched.filter((factor) => factor.direction === "negative"),
+            ? "Your answers show material weaknesses that could lead to refusal unless they are addressed."
+            : "Your answers show critical refusal or admissibility risks that need individual expert review.",
+    strengths: matched.filter((factor) => factor.direction === "positive").sort((a, b) => b.adjustment - a.adjustment),
+    risks: matched.filter((factor) => factor.direction === "negative").sort((a, b) => a.adjustment - b.adjustment),
     nextSteps: Array.from(new Set(matched.map((factor) => factor.action))).slice(0, 5),
     manualReview: matched.some((factor) => factor.manualReview),
     publicId: makePublicId(),
@@ -639,47 +733,51 @@ function categoryLabel(value: ScoreResult["category"], language: Language) {
 function resultExplanation(value: ScoreResult["category"], language: Language) {
   if (language === "en") {
     return value === "High"
-      ? "Your answers indicate a comparatively strong visitor-visa profile under the beta rules."
+      ? "Your answers align well with the main factors officers use to assess a temporary visitor application."
       : value === "Moderate"
-        ? "Your profile includes useful strengths, but a few areas need careful evidence."
+        ? "Your profile has credible strengths, but one or more decision factors need stronger evidence."
         : value === "Low"
-          ? "Your profile currently has meaningful weaknesses that should be reviewed before applying."
-          : "Your answers show critical weaknesses or complex circumstances.";
+          ? "Your answers show material weaknesses that could lead to refusal unless they are addressed."
+          : "Your answers show critical refusal or admissibility risks that need individual expert review.";
   }
 
   return value === "High"
-    ? "თქვენი პასუხები მიუთითებს შედარებით ძლიერ ვიზიტორის ვიზის პროფილზე."
+    ? "თქვენი პასუხები კარგად შეესაბამება იმ ძირითად ფაქტორებს, რომლებსაც ოფიცერი დროებითი ვიზიტის განაცხადის შეფასებისას განიხილავს."
     : value === "Moderate"
-      ? "თქვენს პროფილს აქვს დადებითი მხარეები, თუმცა რამდენიმე საკითხს ძლიერი მტკიცებულება სჭირდება."
+      ? "თქვენს პროფილს აქვს დამაჯერებელი ძლიერი მხარეები, თუმცა ერთ ან რამდენიმე მნიშვნელოვან ფაქტორს უკეთესი დასაბუთება სჭირდება."
       : value === "Low"
-        ? "თქვენს პროფილში ჩანს სუსტი მხარეები, რომელთა გადახედვაც განაცხადამდე სასურველია."
-        : "თქვენი პასუხები მიუთითებს მნიშვნელოვან სირთულეებზე ან კომპლექსურ გარემოებებზე.";
+        ? "თქვენს პასუხებში ჩანს მნიშვნელოვანი სისუსტეები, რომლებმაც მათი გამოსწორების გარეშე შესაძლოა უარი გამოიწვიოს."
+        : "თქვენს პასუხებში ჩანს უარის ან ქვეყანაში დაუშვებლობის კრიტიკული რისკები, რომლებიც ექსპერტის ინდივიდუალურ შეფასებას საჭიროებს.";
 }
 
 function factorExplanation(item: Rule, language: Language) {
   if (language === "en") return item.explanation;
   const map: Record<string, string> = {
-    married: "ოჯახური მდგომარეობა შეიძლება აჩვენებდეს კავშირს საცხოვრებელ ქვეყანასთან.",
+    purpose: item.direction === "positive" ? "მოგზაურობის მიზანი შეესაბამება დროებითი ვიზიტის მოთხოვნებს." : "მოგზაურობის მიზანი დამატებით და მკაფიო დასაბუთებას საჭიროებს.",
+    duration: item.direction === "positive" ? "დაგეგმილი ხანგრძლივობა შეესაბამება დროებით ვიზიტს." : "დაგეგმილი ხანგრძლივობა მიზნის, ფინანსებისა და დაბრუნების უფრო ძლიერ დასაბუთებას მოითხოვს.",
+    trip_plan: item.direction === "positive" ? "კონკრეტული გეგმა და თარიღები ვიზიტის სანდოობას აძლიერებს." : "ბუნდოვანი სამოგზაურო გეგმა ვიზიტის მიზანს ასუსტებს.",
+    funding_source: "საკუთარი, დადასტურებული სახსრები ფინანსურ დამოუკიდებლობას აჩვენებს.",
     travel: item.direction === "positive" ? "საერთაშორისო მოგზაურობის ისტორია აძლიერებს მოგზაურის პროფილს." : "საერთაშორისო მოგზაურობის გამოცდილების არქონა პროფილის ზომიერი სისუსტეა.",
+    travel_compliance: item.direction === "positive" ? "წინა მოგზაურობების პირობების დაცვა თქვენს სანდოობას აძლიერებს." : "წინა საიმიგრაციო პირობების დარღვევა კრიტიკული რისკ-ფაქტორია.",
     travel_depth: "რამდენიმე ქვეყანაში მოგზაურობა დადებითად აჩვენებს თქვენს სამოგზაურო გამოცდილებას.",
     screened_travel: "ძლიერი სავიზო ან სასაზღვრო კონტროლის მქონე ქვეყნებში მოგზაურობა დამატებით აძლიერებს თქვენს სანდოობას.",
     prior_visa: "ადრე მიღებული ვიზა დადებითი ფაქტორია.",
     prior_refusal: "წინა უარი ამცირებს შეფასებას და საჭიროებს ახსნას.",
+    refusal_change: item.direction === "positive" ? "უარის შემდეგ გარემოებების მნიშვნელოვანი გაუმჯობესება დადებითი ფაქტორია." : "მნიშვნელოვანი ცვლილების გარეშე ხელახალი განაცხადი იმავე რისკებს ინარჩუნებს.",
     revoked: "გაუქმებული ვიზა მნიშვნელოვანი რისკ-ფაქტორია.",
     immigration_violation: "ვიზის ვადის დარღვევა, დეპორტაცია ან ქვეყნიდან გაძევება მნიშვნელოვანი რისკ-ფაქტორია.",
     arrest: "დაკავების ისტორია შეიძლება რთულ სავიზო კითხვებს ქმნიდეს.",
     occupation: item.direction === "positive" ? "დასაქმება ან სწავლა აძლიერებს სტაბილურობის მტკიცებულებას." : "ამჟამინდელი საქმიანობის არქონა ასუსტებს სტაბილურობის მტკიცებულებას.",
+    status_duration: item.direction === "positive" ? "ხანგრძლივი სამსახური, ბიზნესი, სწავლა ან საპენსიო სტატუსი სტაბილურობას აჩვენებს." : "ახლად დაწყებული საქმიანობა ნაკლებად ჩამოყალიბებულ კავშირად ითვლება.",
     income: item.direction === "positive" ? "რეგულარული შემოსავალი აძლიერებს ფინანსურ სტაბილურობას." : "რეგულარული შემოსავლის არქონა ფინანსურ ნაწილს ასუსტებს.",
     funds: item.direction === "positive" ? "მოგზაურობისთვის საკმარისი თანხის დადასტურება აძლიერებს თქვენს ფინანსურ პროფილს." : "მოგზაურობის ხარჯების დაუდასტურებლობა განაცხადის მნიშვნელოვანი სისუსტეა.",
     salary: item.direction === "positive" ? "ხელფასის მითითებული დიაპაზონი მხარს უჭერს ფინანსურ სტაბილურობას." : "ხელფასის დაბალი დიაპაზონი უფრო ძლიერ ფინანსურ მტკიცებულებას მოითხოვს.",
-    education: item.direction === "positive" ? "დასრულებული განათლება დადებითად მოქმედებს პროფილის სტაბილურობაზე." : "განათლების არმითითება ან არქონა ასუსტებს პროფილს.",
     home_ties: item.direction === "positive" ? "სამშობლოში არსებული მუდმივი ვალდებულებები დაბრუნების განზრახვას ამყარებს." : "სამშობლოში დაბრუნების დამადასტურებელი კავშირები ამ ეტაპზე სუსტად ჩანს.",
-    interview: item.direction === "positive" ? "გასაუბრებაზე თავდაჯერებულობა განაცხადის უკეთ ახსნაში გეხმარებათ." : "გასაუბრებაზე ნერვიულობამ შეიძლება პასუხების სიცხადეზე იმოქმედოს.",
     relatives: "დანიშნულების ქვეყანაში ახლო ნათესავების არყოლამ შეიძლება შეამციროს დარჩენის რისკის აღქმა.",
     petition: "საიმიგრაციო პეტიციამ შეიძლება გაართულოს ვიზიტორის ვიზის განზრახვის შეფასება.",
-    visited_us: item.direction === "positive" ? "აშშ-ში მოგზაურობა კანადის ვიზის შეფასებისთვის დადებითი ფაქტორია." : "აშშ-ში მოგზაურობის არქონა ამ კონკრეტულ დადებით ფაქტორს არ გაძლევთ.",
     bank: item.direction === "positive" ? "საბანკო ამონაწერები მნიშვნელოვანი ფინანსური მტკიცებულებაა." : "საბანკო ამონაწერების არქონა განაცხადს ასუსტებს.",
     immigration: "დაწყებულმა საიმიგრაციო პროცესმა შეიძლება ვიზიტორის განზრახვა გაართულოს.",
+    application_location: item.direction === "positive" ? "მოქალაქეობის ან საცხოვრებელ ქვეყანაში განაცხადი ადგილობრივი კავშირების შეფასებას ამარტივებს." : "მესამე ქვეყანაში განაცხადისას კვალიფიკაციის დამტკიცება შესაძლოა უფრო რთული იყოს.",
   };
   return map[item.factorCode] ?? item.explanation;
 }
@@ -687,27 +785,31 @@ function factorExplanation(item: Rule, language: Language) {
 function factorAction(item: Rule, language: Language) {
   if (language === "en") return item.action;
   const map: Record<string, string> = {
-    married: "მოამზადეთ ქორწინების მოწმობა და ოჯახური კავშირების მტკიცებულება.",
+    purpose: "მოამზადეთ მოგზაურობის მიზნის მოკლე ახსნა და შესაბამისი დამადასტურებელი დოკუმენტები.",
+    duration: "შეუსაბამეთ მარშრუტი, ბიუჯეტი და დაბრუნების გეგმა მითითებულ თარიღებს.",
+    trip_plan: "მოამზადეთ რეალისტური მარშრუტი, თარიღები, საცხოვრებელი და მოსალოდნელი ხარჯები.",
+    funding_source: "მოამზადეთ საბანკო დოკუმენტები, რომლებიც აჩვენებს, რომ თანხა რეალურად ხელმისაწვდომია.",
     travel: item.direction === "positive" ? "მოამზადეთ პასპორტის შტამპები, წინა ვიზები და მოგზაურობის ისტორია." : "გააძლიერეთ ფინანსური მტკიცებულებები და სამშობლოში დაბრუნების მიზეზების დასაბუთება.",
+    travel_compliance: item.direction === "positive" ? "მოამზადეთ წინა ვიზები და შესვლა-გასვლის დამადასტურებელი ჩანაწერები." : "განაცხადამდე ექსპერტთან განიხილეთ სრული საიმიგრაციო ისტორია.",
     travel_depth: "მოამზადეთ პასპორტის შტამპები და წინა ვიზების ასლები.",
     screened_travel: "მოამზადეთ წინა ვიზების ასლები, შესვლის შტამპები და მოგზაურობის თარიღები.",
     prior_visa: "მოამზადეთ ადრე მიღებული ვიზების ასლები.",
     prior_refusal: "მოამზადეთ მოკლე ახსნა, რა შეიცვალა წინა უარის შემდეგ.",
+    refusal_change: "დოკუმენტურად დაადასტურეთ უარის შემდეგ მომხდარი თითოეული მნიშვნელოვანი ცვლილება.",
     revoked: "განაცხადამდე მიიღეთ ექსპერტის კონსულტაცია და მოამზადეთ სრული ინფორმაცია.",
     immigration_violation: "განაცხადამდე ექსპერტთან განიხილეთ სრული საიმიგრაციო ისტორია და მოამზადეთ შესაბამისი დოკუმენტები.",
     arrest: "მოამზადეთ სრული დოკუმენტები და მიმართეთ ექსპერტს განაცხადამდე.",
     occupation: "მოამზადეთ დასაქმების, ბიზნესის, სწავლის ან პენსიის დამადასტურებელი დოკუმენტები.",
+    status_duration: "მოამზადეთ საქმიანობის ხანგრძლივობისა და შვებულების დამადასტურებელი დოკუმენტები.",
     income: "მოამზადეთ ხელფასის ცნობები და საბანკო ამონაწერები.",
     funds: "მოამზადეთ საბანკო ამონაწერები და მოგზაურობის რეალისტური ბიუჯეტი.",
     salary: "მოამზადეთ ხელფასის ცნობა, საბანკო ამონაწერები და საჭიროების შემთხვევაში სპონსორის დოკუმენტები.",
-    education: "მოამზადეთ დიპლომები, სერტიფიკატები ან სხვა სტაბილურობის მტკიცებულება.",
     home_ties: "მოამზადეთ სამსახურის, სწავლის, ოჯახის წევრებზე ზრუნვის ან ქონების დამადასტურებელი დოკუმენტები.",
-    interview: "წინასწარ მოამზადეთ მოგზაურობის მიზნისა და დაბრუნების მიზეზების მოკლე ახსნა.",
     relatives: "მოამზადეთ დაბრუნების გეგმისა და ადგილობრივი კავშირების მტკიცებულება.",
     petition: "განაცხადის სტრატეგია ექსპერტთან გადაამოწმეთ.",
-    visited_us: "მიუთითეთ აშშ-ში მოგზაურობის ისტორია და მოამზადეთ დამადასტურებელი მასალა.",
     bank: "მოამზადეთ ბოლო თვეების საბანკო ამონაწერები.",
     immigration: "განაცხადამდე გადაამოწმეთ სტრატეგია ექსპერტთან.",
+    application_location: "მოამზადეთ იმ ქვეყანაში კანონიერი ცხოვრების დამადასტურებელი დოკუმენტები, სადაც განაცხადს შეიტანთ.",
   };
   return map[item.factorCode] ?? item.action;
 }
@@ -757,9 +859,13 @@ export default function Home() {
       if (questionId === "international_travel" && value !== "yes") {
         delete nextAnswers.countries_visited_count;
         delete nextAnswers.visited_countries;
+        delete nextAnswers.previous_travel_compliance;
       }
       if (questionId === "regular_monthly_income" && value !== "yes") {
         delete nextAnswers.monthly_salary_range;
+      }
+      if (questionId === "previous_destination_visa_result" && value !== "refused") {
+        delete nextAnswers.circumstances_changed_since_refusal;
       }
       return nextAnswers;
     });
@@ -824,7 +930,7 @@ export default function Home() {
   const waText =
     result && config
       ? encodeURIComponent(
-          `I completed the Test Visa assessment and want expert help.\n\nName: ${contact.name}\nDestination: ${config.label}\nEstimated score: ${result.score}%\nAssessment ID: ${result.publicId}`,
+          `I completed the Test Visa assessment and want expert help.\n\nName: ${contact.name}\nDestination: ${config.label}\nEstimated approval likelihood: ${result.score}%\nAssessment ID: ${result.publicId}`,
         )
       : "";
 
@@ -1005,6 +1111,7 @@ export default function Home() {
                   <span>{result.score}%</span>
                   <strong>{categoryLabel(result.category, language)}</strong>
                 </div>
+                <p className="estimate-note">{t.estimateNote}</p>
                 <p className="result-copy">{resultExplanation(result.category, language)}</p>
                 {result.manualReview && <div className="warning">{t.manual}</div>}
                 <FactorList title={t.strengths} items={result.strengths} empty={t.emptyStrengths} language={language} />

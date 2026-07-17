@@ -482,6 +482,13 @@ button:disabled {
   line-height: 1.7;
 }
 
+.estimate-note {
+  color: #778274;
+  font-size: 0.84rem;
+  font-weight: 700;
+  margin-top: -10px;
+}
+
 .result-view h3 {
   margin-bottom: 10px;
   font-size: 1rem;
