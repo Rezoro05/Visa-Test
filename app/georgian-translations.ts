@@ -89,7 +89,7 @@ export const georgianTranslations: Record<string, string> = {
   "Cape Verde": "კაბო-ვერდე",
   "Central African Republic": "ცენტრალური აფრიკის რესპუბლიკა",
   "Chad": "ჩადი",
-  "Check Your Visa Chances": "შეამოწმეთ ვიზის მიღების შანსები",
+  "Check Your Visa Chances": "გინდა პასპორტზე გიმკითხაო?",
   "Chile": "ჩილე",
   "China": "ჩინეთი",
   "Collect complete statements before applying.": "განაცხადის შეტანამდე შეაგროვეთ სრული ამონაწერები.",

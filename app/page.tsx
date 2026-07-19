@@ -143,7 +143,7 @@ const copy = {
   },
   ka: {
     start: "დაწყება",
-    headline: "შეამოწმეთ სავიზო მზაობა",
+    headline: "გინდა პასპორტზე გიმკითხაო?",
     subhead:
       "უპასუხეთ რამდენიმე მარტივ კითხვას და გაიგე ვიზის მიღების ალბათობა",
     nationality: "რომელი ქვეყნის მოქალაქე ხართ?",
@@ -1391,7 +1391,7 @@ export default function Home() {
             <div className="hero-copy">
               <div className="space-y-5">
                 <h1 className="hero-heading">
-                  {language === "en" ? <>Check Your Visa <span>Chances</span></> : <>შეამოწმეთ ვიზის მიღების <span>შანსები</span></>}
+                  {language === "en" ? <>Check Your Visa <span>Chances</span></> : <>გინდა პასპორტზე <span>გიმკითხაო?</span></>}
                 </h1>
                 <p className="max-w-lg text-lg leading-8 text-[#6b6a62]">{t.subhead}</p>
               </div>
